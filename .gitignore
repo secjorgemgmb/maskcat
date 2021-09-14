@@ -38,3 +38,7 @@ hashcat-6.2.4/docs/readme.txt
 hashcat-6.2.4/docs/rules.txt
 *.dict
 hashcat-6.2.4/extra/tab_completion/howto.txt
+hashcat-6.2.4/docs/hashcat-brain.md
+hashcat-6.2.4/docs/hashcat-plugin-development-guide.md
+hashcat-6.2.4/docs/keyboard-layout-mapping.md
+hashcat-6.2.4/docs/slow-candidates-mode.md

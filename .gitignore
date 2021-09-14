@@ -20,7 +20,6 @@ hashcat-6.2.4/hashcat.exe
 hashcat-6.2.4/docs/user_manuals.txt
 hashcat-6.2.4/docs/team.txt
 hashcat-6.2.4/docs/status_codes.txt
-*.md
 *.hcchr
 hashcat-6.2.4/docs/performance.txt
 hashcat-6.2.4/docs/license_libs/ZLIB_LICENSE.txt

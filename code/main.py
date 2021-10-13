@@ -7,20 +7,28 @@ from exec import execHashcat
 
 if __name__=="__main__":
     
-    dataList = HascatJSON()
-    masks = ['?d?d?d?d?d?d', '?l?l?l?l']
+    """ masksDictionary = {
+        "mask" : [],
+        "puntuation" : []
+    } """
+    #Implementación de diccionario cada mascara es la clave y el valor
+    #es la puntuación de la máscara
+    masksDictionary = {}
+
+    masks = ['?d?d?d?d?d?d', '?l?l?l?l?l']
 
     for mask in masks:
-        execHashcat(dataList, mask)
+        sol = execHashcat(mask)
+        """masksDictionary['mask'].append(mask)
+        masksDictionary['puntuation'].append(sol) """
+
+        #Segunda forma de implementar
+        masksDictionary[mask] = sol
+
         # Eliminar este archivo para que haga el proceso desde 0 con cada máscara, sino recovered_hashes tiene el valor total que se han 
         # recuperado con todas las máscaras usadas (SOLO BORRA EN WINDOWS DE MOMENTO)
         if os.path.isfile('hashcat.potfile'):
-            subprocess.run(['rm', 'hashcat.potfile'])
+            os.remove('hashcat.potfile')
     
-    dataFrame = pd.DataFrame.from_dict(dataList.getJSON())
-
-    print('Hashcat status: 3 (running) 5 (exhausted) 6 (cracked)')
-    print('--------------------------------')
-    print(dataFrame)
-    print(dataFrame.to_csv())
-
+    for key, value in masksDictionary.items():
+        print(key + ' -> ' + str(value))

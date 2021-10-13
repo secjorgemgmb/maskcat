@@ -42,3 +42,4 @@ hashcat-6.2.4/docs/hashcat-brain.md
 hashcat-6.2.4/docs/hashcat-plugin-development-guide.md
 hashcat-6.2.4/docs/keyboard-layout-mapping.md
 hashcat-6.2.4/docs/slow-candidates-mode.md
+.DS_Store

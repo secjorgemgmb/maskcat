@@ -1,9 +1,11 @@
 import os
 import subprocess
 import pandas as pd
+#import jmetalpy
 
-from data import HascatJSON
 from exec import execHashcat
+#from jMetalPy_maskcat import MaskcatSolution, MaskcatProblem
+
 
 if __name__=="__main__":
     
@@ -16,7 +18,7 @@ if __name__=="__main__":
     masksDictionary = {}
 
     masks = ['?d?d?d?d?d?d', '?l?l?l?l?l']
-
+    
     for mask in masks:
         sol = execHashcat(mask)
         """masksDictionary['mask'].append(mask)
@@ -32,3 +34,4 @@ if __name__=="__main__":
     
     for key, value in masksDictionary.items():
         print(key + ' -> ' + str(value))
+    

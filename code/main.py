@@ -29,8 +29,8 @@ if __name__=="__main__":
 
         # Eliminar este archivo para que haga el proceso desde 0 con cada máscara, sino recovered_hashes tiene el valor total que se han 
         # recuperado con todas las máscaras usadas (SOLO BORRA EN WINDOWS DE MOMENTO)
-        if os.path.isfile('hashcat.potfile'):
-            os.remove('hashcat.potfile')
+        '''if os.path.isfile('hashcat.potfile'):
+            os.remove('hashcat.potfile')'''
     
     for key, value in masksDictionary.items():
         print(key + ' -> ' + str(value))

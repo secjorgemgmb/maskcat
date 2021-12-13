@@ -1,7 +1,21 @@
 from jmetal.core.problem import Problem
 from jmetal.core.solution import Solution
+from code.newfunctions import maskToSolution
 
 from exec import execHashcat
+
+
+#   l | abcdefghijklmnopqrstuvwxyz [a-z]
+#   u | ABCDEFGHIJKLMNOPQRSTUVWXYZ [A-Z]
+#   d | 0123456789                 [0-9]
+#   h | 0123456789abcdef           [0-9a-f]
+#   H | 0123456789ABCDEF           [0-9A-F]
+#   s |  !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+#   a | ?l?u?d?s
+#   b | 0x00 - 0xff
+
+maskChromosomes=['\0','l','u','d','h','H','s','a','b']
+chromosomesMask = {0:'\0',1:'?l',2:'?u',3:'?d',4:'?h',5:'?H',6:'?s',7:'?a',8:'?b'}
 
 class MaskcatSolution (Solution):
     def __init__(self, number_of_variables: int, number_of_objectives: int, number_of_constraints: int = 0):
@@ -38,18 +52,45 @@ class MaskcatProblem (Problem):
         super(MaskcatProblem, self).__init__(reference_frot = None)
         
         self.masks = masksList
-        self.masksResults = {
-            'masksList' : [],
-            'punctuations': []
-        }
+        self.masksResults = {}
 
-        self.number_of_variables= len(self.masks)
+        self.number_of_variables= 7
         self.number_of_objectives= 1
         self.number_of_constraints= 0
 
         self.directions = [self.MAXIMIZE]
         self.labels = ['Maskcat']
 
+    #-------------- NUEVO ----------------------
+    def maskToSolution(self, mask:str):
+        mask = mask.replace('?','')
+        maskLen = len(mask)
+
+        solution = []
+        if maskLen >= 8:
+            for i in range (maskLen-1):
+                solution.append(maskChromosomes.index(mask[i]))
+            solution.append(maskChromosomes.index('\0'))
+        elif maskLen == 7:
+            for i in range (maskLen):
+                solution.append(maskChromosomes.index(mask[i]))
+            solution.append(maskChromosomes.index('\0'))
+        else:
+            for i in range (0,8):
+                if i < maskLen:
+                    solution.append(maskChromosomes.index(mask[i]))
+                else:
+                    solution.append(maskChromosomes.index('\0'))
+
+        return solution
+
+    def solutionToMask(self, solution: MaskcatSolution):
+        mask = ''
+        for chromosome in solution:
+            if chromosome != 0:
+                mask = mask + chromosomesMask[chromosome]
+        return mask
+    #-------------------------------
 
     def create_solution(self) -> MaskcatSolution:
         """ Creates a random_search solution to the problem.
@@ -57,7 +98,8 @@ class MaskcatProblem (Problem):
         :return: Solution. """
         new_solution = MaskcatSolution(self.number_of_variables, self.number_of_objectives)
 
-        new_solution.variables[0] = [mask for mask in range (self.number_of_variables)]
+        new_solution.variables = self.maskToSolution() #Metodo transformar de mascara a array ints -> devuelve lista
+        #'?d?d?d?d?d?d' 
 
         return new_solution
 
@@ -66,22 +108,16 @@ class MaskcatProblem (Problem):
         replaced. Note that this framework ASSUMES minimization, thus solutions must be evaluated in consequence.
 
         :return: Evaluated solution. """
+        score: float
+        mask = self.solutionToMask(solution.variables)
+        if mask  not in self.masksResults:
+            score = execHashcat(mask)
+            self.masksResults[mask]=score
+        else:
+            score = self.masksResults.get(mask)
 
-        for mask in solution.variables:
-            puntuation = execHashcat(mask)
-            x = self.masksResults.get("punctuations")
-            x.append(puntuation)
-            x.sort()
-            pos = x.index(puntuation)
-            y = self.masksResults.get("masksList") 
-            y.insert(pos, mask)
-            self.masksResults["masksList"] = y
-            self.masksResults["punctuations"]= x
-        
-        masksBestPunctuation = self.masksResults.get('punctuations')
-        masksBestPunctuation = masksBestPunctuation.pop()
 
-        solution.objectives[0] =-1.0 * masksBestPunctuation
+        solution.objectives[0] =score
         return solution
 
     def get_name(self) -> str:

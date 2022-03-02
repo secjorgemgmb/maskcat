@@ -3,7 +3,7 @@ import os
 
 def cypherMD5(file):
     fd = open(file, "r", errors='ignore')
-    fd2 = open('/Users/jorgemartinezgarcia/CiberSeg utils/rockyouMD5.txt', 'w')
+    fd2 = open('top_1M_MD5.txt', 'w')
     do = True
 
     while do:
@@ -22,4 +22,4 @@ def cypherMD5(file):
 
 
 
-cypherMD5('/Users/jorgemartinezgarcia/CiberSeg utils/rockyou.txt')
+cypherMD5('10-million-password-list-top-1000000.txt')

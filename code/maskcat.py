@@ -1,4 +1,4 @@
-from audioop import cross
+import json
 from jmetal_maskcat import MaskcatProblem, MaskcatSolution
 
 from jmetal.algorithm.singleobjective import GeneticAlgorithm
@@ -23,6 +23,12 @@ algorithm.run()
 
 front = algorithm.get_result()
 
+masksResults = problem.get_maskResults()
+masksResults["Solution"] = str(front)
+
+fd = open("../results/maskcatResults.json", "w")
+json.dump(masksResults, fd)
+fd.close()
 # save to files
 # print_function_values_to_file(front, '/Users/jorgemartinezgarcia/OneDrive - Universidad Rey Juan Carlos/TFG/maskcat/functio_values_to_file')
 # print_variables_to_file(front, '/Users/jorgemartinezgarcia/OneDrive - Universidad Rey Juan Carlos/TFG/maskcat/variables_to_file')

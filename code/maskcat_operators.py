@@ -105,8 +105,11 @@ class MaskcatUniformMutation(operators.Mutation[MaskcatSolution]):
 
             if rand <= self.probability:
                 tmp = (random.randint(0, 4))
-
-                solution.variables[i] = tmp
+                if i==0:
+                    if tmp != 0:
+                        solution.variables[i] = tmp
+                else:
+                    solution.variables[i] = tmp
 
         return solution
 

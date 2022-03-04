@@ -92,6 +92,9 @@ class MaskcatProblem (Problem):
         self.number_of_objectives= 1
         self.number_of_constraints= 0
 
+        self.number_of_predefined_masks = 5
+        self.number_of_predefined_masks_inserted = 0
+
         self.directions = [self.MAXIMIZE]
         self.labels = ['Maskcat']
 
@@ -156,7 +159,11 @@ class MaskcatProblem (Problem):
         #Mascara alatoria a partir del charset de arriba
         new_solution = MaskcatSolution(self.number_of_variables, self.number_of_objectives)
 
-        new_solution.variables = self.randomMask()
+        if self.number_of_predefined_masks_inserted != self.number_of_predefined_masks:
+            new_solution.variables = mask_sets[random.randint(0, 404)]
+            self.number_of_predefined_masks_inserted = self.number_of_predefined_masks_inserted + 1
+        else:
+            new_solution.variables = self.randomMask()
         # new_solution.variables = self.maskToSolution() #Metodo transformar de mascara a array ints -> devuelve lista
         # #'?d?d?d?d?d?d' 
 

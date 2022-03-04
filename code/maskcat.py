@@ -26,7 +26,7 @@ front = algorithm.get_result()
 masksResults = problem.get_maskResults()
 masksResults["Solution"] = str(front)
 
-fd = open("../results/maskcatResults.json", "w")
+fd = open("../results/maskcatResults_5predefined.json", "w")
 json.dump(masksResults, fd)
 fd.close()
 # save to files

@@ -33,6 +33,8 @@ for line in Lines:
         arrayLines.append(str(arrayMask))
     arrayMask=[]
 
+print(len(arrayLines))
+
 print("[")
 for array in arrayLines:
     print(str(array)+", ")

@@ -17,14 +17,14 @@ def execHashcat (mask):
     #-------------------- COMANDO EJECUCIÓN MAC --------------------------------------
     #hashcat -m 0 -a 3 --runtime=60 --status-json --session=[mascara para identificar] wordlists/wordlist1MD5.txt [mascara]
   
-    result = subprocess.run([r"./hashcat", "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "--session={:s}".format(mask), 
-    r"maskcat/wordlists/top_1M_MD5.txt", "-O", "--potfile-disable", "--logfile-disable", mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
+    # result = subprocess.run([r"./hashcat", "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "--session={:s}".format(mask), 
+    # r"maskcat/wordlists/top_1M_MD5.txt", "-O", "--potfile-disable", "--logfile-disable", mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
     
     
     #-------------------- COMANDO EJECUCIÓN WINDOWS WSL -----------------------------------
     #.\Desktop\hashcat-6.2.4\hashcat.exe -m 0 -a 3 --runtime=60 --status-json "C:\Users\Jorge\OneDrive - Universidad Rey Juan Carlos\TFG\maskcat\wordlists\wordlist1MD5.txt" ?d?d?d?d
-    # result = subprocess.run([r"./hashcat.exe",  "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "--session={:s}".format(mask.replace("?", "_")), 
-    # r"../wordlists/top_1M_MD5.txt", "-d", "1", "-O", "--potfile-disable", "--logfile-disable", mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
+    result = subprocess.run([r"./hashcat.exe",  "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "--session={:s}".format(mask.replace("?", "_")), 
+    r"../wordlists/top_1M_MD5.txt", "-d", "1", "-O", "--potfile-disable", "--logfile-disable", mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
 
     # RegEX para encontrar el JSON dentro de la salida obtenida de HASHACAT == grep "{.*}"
     dayStop = datetime.date.today()

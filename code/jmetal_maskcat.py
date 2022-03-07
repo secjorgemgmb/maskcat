@@ -92,7 +92,7 @@ class MaskcatProblem (Problem):
         self.number_of_objectives= 1
         self.number_of_constraints= 0
 
-        self.number_of_predefined_masks = 5
+        self.number_of_predefined_masks = 2
         self.number_of_predefined_masks_inserted = 0
 
         self.directions = [self.MAXIMIZE]

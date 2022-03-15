@@ -61,8 +61,14 @@ class MaskcatSolution (Solution):
         return False
 
     def __str__(self) -> str:
-        return 'Solution(variables={},objectives={},constraints={})'.format(self.variables, self.objectives,
+        return 'Solution(variables={},score={},constraints={})'.format(self.variables, self.objectives,
                                                                             self.constraints)
+    
+    def getScore(self):
+        return self.objectives
+
+    def getMask(self):
+        return self.variables
 
 class MaskcatProblem (Problem):
 
@@ -87,6 +93,7 @@ class MaskcatProblem (Problem):
         
         self.masks = []
         self.masksResults = {}
+        self.masksHistory = []
 
         self.number_of_variables= 7
         self.number_of_objectives= 1
@@ -136,13 +143,13 @@ class MaskcatProblem (Problem):
             chromosome = random.randint(0, 4)
             randMask.append(chromosome)
 
-        i = 0 
-        while i != 1:
-            if randMask[i] == 0:
-                print(randMask)
-                randMask[i] = random.randint(0, 4)
-                i = i-1
-            i = i+1
+        # i = 0 
+        # while i != 1:
+        #     if randMask[i] == 0:
+        #         print(randMask)
+        #         randMask[i] = random.randint(0, 4)
+        #         i = i-1
+        #     i = i+1
 
         # if 0 not in randMask:
         #     randMask[7]=0
@@ -160,7 +167,7 @@ class MaskcatProblem (Problem):
         new_solution = MaskcatSolution(self.number_of_variables, self.number_of_objectives)
 
         if self.number_of_predefined_masks_inserted != self.number_of_predefined_masks:
-            new_solution.variables = mask_sets[random.randint(0, 404)]
+            new_solution.variables = mask_sets[random.randint(0, len(mask_sets))]
             self.number_of_predefined_masks_inserted = self.number_of_predefined_masks_inserted + 1
         else:
             new_solution.variables = self.randomMask()
@@ -172,15 +179,19 @@ class MaskcatProblem (Problem):
     def evaluate(self, solution: MaskcatSolution) -> MaskcatSolution:
         score: float
         mask = self.solutionToMask(solution.variables)
-        
-        if mask  not in self.masksResults:
-            print('Evaluating: ' + mask + " " + str(solution.variables))
-            score = execHashcat(mask)
-            self.masksResults[mask]=score
-            print(str(score))
-        else:
-            score = self.masksResults.get(mask)
 
+        if len(mask)>=8: # 4 ?x o más
+            if mask  not in self.masksResults:
+                # print('Evaluating: ' + mask + " " + str(solution.variables))
+                score = execHashcat(mask)
+                self.masksResults[mask]=score
+                # print(str(score))
+            else:
+                score = self.masksResults.get(mask)
+        else:
+            score = -0.0
+
+        self.masksHistory.append([mask, solution.objectives[0]])
         solution.objectives[0] =score
         return solution
 
@@ -189,5 +200,8 @@ class MaskcatProblem (Problem):
 
     def get_maskResults(self):
         return self.masksResults
+
+    def get_masksHistory(self):
+        return self.masksHistory
 
 

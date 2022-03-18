@@ -11,7 +11,7 @@ def stringToTimestamp (day:str, hour:str):
     date = datetime.datetime.fromisoformat(ISOFormatString)
     return date.timestamp()
 
-def execHashcat (mask):
+def execHashcat (wordlist_route, mask):
     dayStart = datetime.date.today()
 
     #-------------------- COMANDO EJECUCIÓN MAC --------------------------------------
@@ -23,8 +23,8 @@ def execHashcat (mask):
     
     #-------------------- COMANDO EJECUCIÓN WINDOWS WSL -----------------------------------
     #.\Desktop\hashcat-6.2.4\hashcat.exe -m 0 -a 3 --runtime=60 --status-json "C:\Users\Jorge\OneDrive - Universidad Rey Juan Carlos\TFG\maskcat\wordlists\wordlist1MD5.txt" ?d?d?d?d
-    result = subprocess.run([r"./hashcat.exe",  "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "--session={:s}".format(mask.replace("?", "_")), 
-    r"../wordlists/top_1M_MD5.txt", "-d", "1", "-O", "--potfile-disable", "--logfile-disable", mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
+    result = subprocess.run([r"./hashcat.exe",  "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "-d", "1", "-O", "--potfile-disable", "--logfile-disable",
+     "--session={:s}".format(mask.replace("?", "_")), wordlist_route,  mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
 
     # RegEX para encontrar el JSON dentro de la salida obtenida de HASHACAT == grep "{.*}"
     dayStop = datetime.date.today()

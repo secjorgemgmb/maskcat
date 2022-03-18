@@ -1,4 +1,4 @@
-from jmetal_maskcat import MaskcatProblem, MaskcatSolution
+from maskcat_problem import MaskcatProblem, MaskcatSolution
 import jmetal.core.operator as operators
 
 import copy

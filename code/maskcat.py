@@ -1,5 +1,5 @@
 import json
-from jmetal_maskcat import MaskcatProblem, MaskcatSolution
+from maskcat_problem import MaskcatProblem, MaskcatSolution
 
 from jmetal.algorithm.singleobjective import GeneticAlgorithm
 
@@ -10,6 +10,8 @@ import jmetal.util.observer as observers
 
 from maskcat_operators import MaskcatSPXCrossover, MaskcatUniformMutation
 from maskcat_observers import MaskcatObserver
+
+import pandas as pd
 
 
 historico = {}
@@ -23,8 +25,8 @@ def mean(list):
     
     return sum/len(list)
 
-def maskcat_single(tag:str):
-    problem = MaskcatProblem()
+def maskcat_single(tag:str, wordlist_route:str):
+    problem = MaskcatProblem(wordlist_route, pass_len=7, predefined_masks=2)
 
     algorithm = GeneticAlgorithm(problem=problem,
                                 population_size=10, 
@@ -64,9 +66,10 @@ def maskcat_single(tag:str):
     fd2.close()
 
 
-def maskcat_loop():
+def maskcat_loop(tag:str, wordlist_route:str):
+    df = pd.DataFrame(columns=["Iteracion", "Puntuacion", "Array"])
     for i in range (0, 30):
-        problem = MaskcatProblem()
+        problem = MaskcatProblem(wordlist_route, pass_len=7, predefined_masks=2)
 
         algorithm = GeneticAlgorithm(problem=problem,
                                     population_size=10, 
@@ -82,7 +85,7 @@ def maskcat_loop():
         progress_bar = observers.ProgressBarObserver(max=max_evaluations)
         algorithm.observable.register(progress_bar)
 
-        maskcat_observer = MaskcatObserver("../maskcat_generaciones", "maskcat_generaciones_rep{}.csv".format(i), 1.0)
+        maskcat_observer = MaskcatObserver("../maskcat_generaciones", "maskcat_generaciones_{}_rep{}.csv".format(tag, i), 1.0)
         algorithm.observable.register(maskcat_observer)
 
         algorithm.run()
@@ -91,7 +94,7 @@ def maskcat_loop():
         print(str(solutions))
 
         masksHistory = problem.get_masksHistory()
-        fd1 = open("../results/maskcatHistory_rep{}.csv".format(i), "w")
+        fd1 = open("../results/maskcatHistory_{}_rep{}.csv".format(tag, i), "w")
         masksHistoryCSV = []
         for line in masksHistory:
             masksHistoryCSV.append(str(line[0])+","+str(line[1])+"\n")    
@@ -101,25 +104,70 @@ def maskcat_loop():
         masksResults = problem.get_maskResults()
         masksResults["Solution"] = str(solutions)
 
-        fd2 = open("../results/maskcatResults_rep{}.json".format(i), "w")
+        fd2 = open("../results/maskcatResults_{}_rep{}.json".format(tag, i), "w")
         json.dump(masksResults, fd2)
         fd2.close()
 
-        historico[i] = {"Array mascara":solutions.getMask(), "Puntuacion":solutions.getScore()}
+        df = df.append({"Iteracion":i, "Puntuacion":solutions.getScore(), "Array":solutions.getMask()}, ignore_index=True)
         scores.append(solutions.getScore())
+    # df.to_json(df,"../results/estadisticas_historico_{}.json".format(tag))
+    df.to_csv("../results/estadisticas_historico_{}.json".format(tag), index=False)
 
-    fd3 = open("../results/estadisticas_historico.json", "w")
-    json.dump(historico, fd3)
+    media = df["Puntuacion"].mean()
+    max = df["Puntuacion"].max()
+    min = df["Puntuacion"].min()
+    desv_est = df["Puntuacion"].std()
+    moda = df["Puntuacion"].mode()[0]
+    mediana = df["Puntuacion"].median()
+
+    fd3 = open("../results/estadisticas_{}.txt".format(tag), "w")
+    fd3.write('''Media = {}\n
+    Max = {}\n
+    Min = {}\n
+    Desviacion estandar = {}\n
+    Moda = {}\n
+    Mediana = {}'''.format(media, max, min, desv_est, moda, mediana))
     fd3.close()
 
-# scores.sort()
+    
+    
 
-# max = scores[0]
-# min = scores(len(scores)-1)
+def maskcat_single_longpass(tag:str, wordlist_route:str):
+    problem = MaskcatProblem(wordlist_route, pass_len=12, predefined_masks=2)
 
-# scores_mean = mean(scores)
+    algorithm = GeneticAlgorithm(problem=problem,
+                                population_size=10, 
+                                offspring_population_size=10, 
+                                mutation=MaskcatUniformMutation(0.1) , 
+                                selection= jmetal.operator.selection.BinaryTournamentSelection(), 
+                                crossover=MaskcatSPXCrossover(0.7),
+                                termination_criterion=StoppingByEvaluations(max_evaluations))
 
+    basic = observers.BasicObserver(frequency=1.0)
+    algorithm.observable.register(observer=basic)
 
+    progress_bar = observers.ProgressBarObserver(max=max_evaluations)
+    algorithm.observable.register(progress_bar)
 
+    maskcat_observer = MaskcatObserver("../maskcat_generaciones", "maskcat_generaciones_longPass_{}.csv".format(tag), 1.0)
+    algorithm.observable.register(maskcat_observer)
 
-print('TERMINADO\n')
+    algorithm.run()
+
+    solutions = algorithm.get_result()
+    print(str(solutions))
+
+    masksHistory = problem.get_masksHistory()
+    fd1 = open("../results/maskcatHistory_longPass_{}.csv".format(tag), "w")
+    masksHistoryCSV = []
+    for line in masksHistory:
+        masksHistoryCSV.append(str(line[0])+","+str(line[1])+"\n")    
+    fd1.writelines(masksHistoryCSV)
+    fd1.close()
+
+    masksResults = problem.get_maskResults()
+    masksResults["Solution"] = str(solutions)
+
+    fd2 = open("../results/maskcatResults_longPass_{}.json".format(tag), "w")
+    json.dump(masksResults, fd2)
+    fd2.close()

@@ -5,7 +5,7 @@ import pandas as pd
 
 from exec import execHashcat
 import datetime
-from maskcat import maskcat_single
+from maskcat import maskcat_single, maskcat_single_longpass, maskcat_loop
 #from jMetalPy_maskcat import MaskcatSolution, MaskcatProblem
 
 
@@ -38,5 +38,38 @@ from maskcat import maskcat_single
     
 #     for key, value in masksDictionary.items():
 #         print(key + ' -> ' + str(value))
-    
-maskcat_single(datetime.date.today())
+
+wordlist_route = "../wordlists/top_1M_MD5.txt"
+run_type = 3
+
+if run_type == 1:
+    print("Modo de ejecución seleccionado = mascaras long <= 8, una sola iteracion")
+    maskcat_single(datetime.date.today(), wordlist_route)
+    print("Proceso terminado")
+elif run_type == 2:
+    print("Modo de ejecución seleccionado = mascaras long <= 8, 30 iteraciones")
+    maskcat_loop(datetime.date.today(), wordlist_route)
+    print("Proceso terminado")
+elif run_type == 3:
+    print("Modo de ejecución seleccionado = mascaras long <= 13, una sola iteracion")
+    maskcat_single_longpass(datetime.date.today(), wordlist_route)
+    print("Proceso terminado")
+else:
+    print("Modo de ejecución no encontrado")
+
+run_type = 2
+
+if run_type == 1:
+    print("Modo de ejecución seleccionado = mascaras long <= 8, una sola iteracion")
+    maskcat_single(datetime.date.today(), wordlist_route)
+    print("Proceso terminado")
+elif run_type == 2:
+    print("Modo de ejecución seleccionado = mascaras long <= 8, 30 iteraciones")
+    maskcat_loop(datetime.date.today(), wordlist_route)
+    print("Proceso terminado")
+elif run_type == 3:
+    print("Modo de ejecución seleccionado = mascaras long <= 13, una sola iteracion")
+    maskcat_single_longpass(datetime.date.today(), wordlist_route)
+    print("Proceso terminado")
+else:
+    print("Modo de ejecución no encontrado")

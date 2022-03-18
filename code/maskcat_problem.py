@@ -65,7 +65,7 @@ class MaskcatSolution (Solution):
                                                                             self.constraints)
     
     def getScore(self):
-        return self.objectives
+        return self.objectives[0]
 
     def getMask(self):
         return self.variables
@@ -88,19 +88,21 @@ class MaskcatProblem (Problem):
     #     self.directions= [self.MAXIMIZE]
     #     self.labels= ['Maskcat']
 
-    def __init__ (self):
+    def __init__ (self, wordlist_route:str, pass_len = 7, predefined_masks = 2):
         super(MaskcatProblem, self).__init__()
         
         self.masks = []
         self.masksResults = {}
         self.masksHistory = []
 
-        self.number_of_variables= 7
+        self.number_of_variables= pass_len
         self.number_of_objectives= 1
         self.number_of_constraints= 0
 
-        self.number_of_predefined_masks = 2
+        self.number_of_predefined_masks = predefined_masks
         self.number_of_predefined_masks_inserted = 0
+
+        self.wordlist = wordlist_route
 
         self.directions = [self.MAXIMIZE]
         self.labels = ['Maskcat']
@@ -111,16 +113,16 @@ class MaskcatProblem (Problem):
         maskLen = len(mask)
 
         solution = []
-        if maskLen >= 8:
+        if maskLen >= self.number_of_variables+1:
             for i in range (maskLen-1):
                 solution.append(maskChromosomes.index(mask[i]))
             solution.append(maskChromosomes.index('\0'))
-        elif maskLen == 7:
+        elif maskLen == self.number_of_variables:
             for i in range (maskLen):
                 solution.append(maskChromosomes.index(mask[i]))
             solution.append(maskChromosomes.index('\0'))
         else:
-            for i in range (0,8):
+            for i in range (0,self.number_of_variables+1):
                 if i < maskLen:
                     solution.append(maskChromosomes.index(mask[i]))
                 else:
@@ -139,7 +141,7 @@ class MaskcatProblem (Problem):
     
     def randomMask (self):
         randMask = []
-        for i in range (0,8):
+        for i in range (0,self.number_of_variables+1):
             chromosome = random.randint(0, 4)
             randMask.append(chromosome)
 
@@ -167,7 +169,11 @@ class MaskcatProblem (Problem):
         new_solution = MaskcatSolution(self.number_of_variables, self.number_of_objectives)
 
         if self.number_of_predefined_masks_inserted != self.number_of_predefined_masks:
-            new_solution.variables = mask_sets[random.randint(0, len(mask_sets))]
+            predefined_mask = mask_sets[random.randint(0, len(mask_sets))]
+            while len(predefined_mask) != self.number_of_variables+1 and not(len(predefined_mask)>self.number_of_variables):
+                predefined_mask.append(0)
+
+            new_solution.variables = predefined_mask
             self.number_of_predefined_masks_inserted = self.number_of_predefined_masks_inserted + 1
         else:
             new_solution.variables = self.randomMask()
@@ -182,8 +188,8 @@ class MaskcatProblem (Problem):
 
         if len(mask)>=8: # 4 ?x o más
             if mask  not in self.masksResults:
-                # print('Evaluating: ' + mask + " " + str(solution.variables))
-                score = execHashcat(mask)
+                print('Evaluating: ' + mask + " " + str(solution.variables))
+                score = execHashcat(self.wordlist, mask)
                 self.masksResults[mask]=score
                 # print(str(score))
             else:

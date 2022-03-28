@@ -1,3 +1,4 @@
+from calendar import day_abbr
 import os
 import subprocess
 import pandas as pd
@@ -5,7 +6,7 @@ import pandas as pd
 
 from exec import execHashcat
 import datetime
-from maskcat import maskcat_single, maskcat_single_longpass, maskcat_loop
+from maskcat import maskcat_single, maskcat_single_longpass, maskcat_loop, maskcat_execution
 #from jMetalPy_maskcat import MaskcatSolution, MaskcatProblem
 
 
@@ -39,37 +40,45 @@ from maskcat import maskcat_single, maskcat_single_longpass, maskcat_loop
 #     for key, value in masksDictionary.items():
 #         print(key + ' -> ' + str(value))
 
+date = datetime.date.today()
+
+directory_generations = "../maskcat_generaciones/{}".format(date)
+directory_results = "../results/{}".format(date)
+tag = "maskcatNormal_10pred_{}".format(date)
 wordlist_route = "../wordlists/top_1M_MD5.txt"
 run_type = 3
 
-if run_type == 1:
-    print("Modo de ejecución seleccionado = mascaras long <= 8, una sola iteracion")
-    maskcat_single(datetime.date.today(), wordlist_route)
-    print("Proceso terminado")
-elif run_type == 2:
-    print("Modo de ejecución seleccionado = mascaras long <= 8, 30 iteraciones")
-    maskcat_loop(datetime.date.today(), wordlist_route)
-    print("Proceso terminado")
-elif run_type == 3:
-    print("Modo de ejecución seleccionado = mascaras long <= 13, una sola iteracion")
-    maskcat_single_longpass(datetime.date.today(), wordlist_route)
-    print("Proceso terminado")
-else:
-    print("Modo de ejecución no encontrado")
+# if run_type == 1:
+#     print("Modo de ejecución seleccionado = mascaras long <= 8, una sola iteracion")
+#     maskcat_single(datetime.date.today(), wordlist_route)
+#     print("Proceso terminado")
+# elif run_type == 2:
+#     print("Modo de ejecución seleccionado = mascaras long <= 8, 30 iteraciones")
+#     maskcat_loop(datetime.date.today(), wordlist_route)
+#     print("Proceso terminado")
+# elif run_type == 3:
+#     print("Modo de ejecución seleccionado = mascaras long <= 13, una sola iteracion")
+#     maskcat_single_longpass(datetime.date.today(), wordlist_route)
+#     print("Proceso terminado")
+# else:
+#     print("Modo de ejecución no encontrado")
 
-run_type = 2
+# maskcat_execution(directory_generations=directory_generations, directory_results=directory_results, tag=tag, wordlist_route=wordlist_route, repetitions=1, population_size=50, max_evaluations=5000, mask_len=7, predefined_masks=10)
 
-if run_type == 1:
-    print("Modo de ejecución seleccionado = mascaras long <= 8, una sola iteracion")
-    maskcat_single(datetime.date.today(), wordlist_route)
-    print("Proceso terminado")
-elif run_type == 2:
-    print("Modo de ejecución seleccionado = mascaras long <= 8, 30 iteraciones")
-    maskcat_loop(datetime.date.today(), wordlist_route)
-    print("Proceso terminado")
-elif run_type == 3:
-    print("Modo de ejecución seleccionado = mascaras long <= 13, una sola iteracion")
-    maskcat_single_longpass(datetime.date.today(), wordlist_route)
-    print("Proceso terminado")
-else:
-    print("Modo de ejecución no encontrado")
+
+
+# tag = "maskcatLargo_0pred_{}".format(date)
+# inicio1 = datetime.datetime.now()
+# maskcat_execution(directory_generations=directory_generations, directory_results=directory_results, tag=tag, wordlist_route=wordlist_route, repetitions=1, population_size=50, max_evaluations=5000, mask_len=11, predefined_masks=0)
+# fin1 = datetime.datetime.now()
+
+tag = "maskcatLoop_0pred_{}".format(date)
+inicio2 = datetime.datetime.now()
+maskcat_execution(directory_generations=directory_generations, directory_results=directory_results, tag=tag, wordlist_route=wordlist_route, repetitions=30, population_size=50, max_evaluations=5000, mask_len=7, predefined_masks=0)
+fin2 = datetime.datetime.now()
+
+fd = open ("../times.txt", "w")
+fd.write('''Experimento : normal, 0 máscaras predefinidas, bucle 30 iteraciones
+Inicio: {}
+Fin: {}'''.format(inicio2, fin2))
+fd.close()

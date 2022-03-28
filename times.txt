@@ -1,0 +1,3 @@
+Experimento : normal, 0 máscaras predefinidas, bucle 30 iteraciones
+Inicio: 2022-03-26 12:11:42.258785
+Fin: 2022-03-28 01:24:07.697176

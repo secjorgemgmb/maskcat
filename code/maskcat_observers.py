@@ -24,7 +24,7 @@ class MaskcatObserver(Observer):
         else:
             if not self.file in os.listdir(self.directory):
                 fd = open("{}/{}".format(self.directory, self.file), "a")
-                fd.write("Evaluations,BestFitness,SolutionArray\n")
+                fd.write("Evaluations;BestFitness;SolutionArray\n")
                 fd.close()
 
     def update(self, *args, **kwargs):
@@ -39,7 +39,7 @@ class MaskcatObserver(Observer):
             solutionArray = solutions.variables
 
             fd.write(
-                '{},{},{}\n'.format(
+                '{};{};{}\n'.format(
                     evaluations, fitness, solutionArray
                 )
             )

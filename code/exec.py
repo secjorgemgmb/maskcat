@@ -18,7 +18,7 @@ def execHashcat (wordlist_route, mask):
     #hashcat -m 0 -a 3 --runtime=60 --status-json --session=[mascara para identificar] wordlists/wordlist1MD5.txt [mascara]
   
     # result = subprocess.run([r"./hashcat", "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "--session={:s}".format(mask), 
-    # r"maskcat/wordlists/top_1M_MD5.txt", "-O", "--potfile-disable", "--logfile-disable", mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
+    # wordlist_route, "-O", "--potfile-disable", "--logfile-disable", mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
     
     
     #-------------------- COMANDO EJECUCIÓN WINDOWS WSL -----------------------------------

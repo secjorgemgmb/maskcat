@@ -75,20 +75,7 @@ class MaskcatProblem (Problem):
     MINIMIZE = -1
     MAXIMIZE = 1
 
-    # def __init__(self):
-    #     self.masks = []
-    #     self.masksResults = {}
-        
-    #     self.number_of_variables: int = 7
-    #     self.number_of_objectives: int = 1
-    #     self.number_of_constraints: int = 0
-
-    #     self.reference_front= []
-
-    #     self.directions= [self.MAXIMIZE]
-    #     self.labels= ['Maskcat']
-
-    def __init__ (self, wordlist_route:str, pass_len = 7, predefined_masks = 2):
+    def __init__ (self, wordlist_route:str, generation_size:int, pass_len = 7, predefined_masks = 2):
         super(MaskcatProblem, self).__init__()
         
         self.masks = []
@@ -103,6 +90,9 @@ class MaskcatProblem (Problem):
         self.number_of_predefined_masks_inserted = 0
 
         self.wordlist = wordlist_route
+        self.generation = 1
+        self.generation_counter = 0
+        self.generation_size = generation_size
 
         self.directions = [self.MAXIMIZE]
         self.labels = ['Maskcat']
@@ -184,23 +174,29 @@ class MaskcatProblem (Problem):
 
     def evaluate(self, solution: MaskcatSolution) -> MaskcatSolution:
         score: float
+
+        self.generation_counter = self.generation_counter + 1
+
         mask = self.solutionToMask(solution.variables)
 
         if len(mask)>=8: # 4 ?x o más
             if mask  not in self.masksResults:
-                print('Evaluating: ' + mask + " " + str(solution.variables))
+                print("Evaluating: {}".format(mask))
                 score = execHashcat(self.wordlist, mask)
-                self.masksResults[mask]=score
-                # print(str(score))
+                self.masksResults[mask]={"Score":score,"Generation":self.generation} 
             else:
-                score = self.masksResults.get(mask)
+                score = self.masksResults.get(mask)["Score"]
         else:
             score = -0.0
 
-        self.masksHistory.append([mask, solution.objectives[0]])
+        self.masksHistory.append([mask, score, self.generation])
         solution.objectives[0] =score
-        return solution
 
+        if self.generation_counter == self.generation_size:
+            self.generation = self.generation + 1
+            self.generation_counter = 0
+
+        return solution
     def get_name(self) -> str:
         return 'Maskcat'
 

@@ -1,4 +1,8 @@
 import json
+import logging
+from pathlib import Path
+import os
+
 from maskcat_problem import MaskcatProblem, MaskcatSolution
 
 from jmetal.algorithm.singleobjective import GeneticAlgorithm
@@ -16,14 +20,7 @@ import pandas as pd
 
 historico = {}
 scores = []
-max_evaluations = 600
-
-def mean(list):
-    sum = 0
-    for element in list:
-        sum = sum + element
-    
-    return sum/len(list)
+LOGGER = logging.getLogger('jmetal')
 
 def maskcat_single(tag:str, wordlist_route:str):
     problem = MaskcatProblem(wordlist_route, pass_len=7, predefined_masks=2)
@@ -72,8 +69,8 @@ def maskcat_loop(tag:str, wordlist_route:str):
         problem = MaskcatProblem(wordlist_route, pass_len=7, predefined_masks=2)
 
         algorithm = GeneticAlgorithm(problem=problem,
-                                    population_size=10, 
-                                    offspring_population_size=10, 
+                                    population_size=50, 
+                                    offspring_population_size=50, 
                                     mutation=MaskcatUniformMutation(0.1) , 
                                     selection= jmetal.operator.selection.BinaryTournamentSelection(), 
                                     crossover=MaskcatSPXCrossover(0.7),
@@ -110,8 +107,8 @@ def maskcat_loop(tag:str, wordlist_route:str):
 
         df = df.append({"Iteracion":i, "Puntuacion":solutions.getScore(), "Array":solutions.getMask()}, ignore_index=True)
         scores.append(solutions.getScore())
-    # df.to_json(df,"../results/estadisticas_historico_{}.json".format(tag))
-    df.to_csv("../results/estadisticas_historico_{}.json".format(tag), index=False)
+
+    df.to_csv("../results/estadisticas_historico_{}.csv".format(tag), index=False)
 
     media = df["Puntuacion"].mean()
     max = df["Puntuacion"].max()
@@ -130,8 +127,6 @@ def maskcat_loop(tag:str, wordlist_route:str):
     fd3.close()
 
     
-    
-
 def maskcat_single_longpass(tag:str, wordlist_route:str):
     problem = MaskcatProblem(wordlist_route, pass_len=12, predefined_masks=2)
 
@@ -171,3 +166,77 @@ def maskcat_single_longpass(tag:str, wordlist_route:str):
     fd2 = open("../results/maskcatResults_longPass_{}.json".format(tag), "w")
     json.dump(masksResults, fd2)
     fd2.close()
+
+
+def maskcat_execution(directory_generations:str, directory_results:str , tag:str, wordlist_route:str, repetitions:int, population_size:int, max_evaluations:int, mask_len:int, predefined_masks:int):
+    tag_backup = tag
+    
+    if not Path(directory_generations).is_dir():
+            LOGGER.warning('Directory {} does not exist. Creating it.'.format(directory_generations))
+            Path(directory_generations).mkdir(parents=True)
+    if not Path(directory_results).is_dir():
+            LOGGER.warning('Directory {} does not exist. Creating it.'.format(directory_results))
+            Path(directory_results).mkdir(parents=True)
+
+    df = pd.DataFrame(columns=["Iteracion", "Puntuacion", "Array"])
+    for i in range (0, repetitions):
+        if repetitions > 1:
+            tag = tag_backup + "_rep{}".format(i)
+
+        problem = MaskcatProblem(wordlist_route, pass_len=mask_len, predefined_masks=predefined_masks, generation_size=population_size)
+
+        algorithm = GeneticAlgorithm(problem=problem,
+                                    population_size=population_size, 
+                                    offspring_population_size=population_size, 
+                                    mutation=MaskcatUniformMutation(0.1) , 
+                                    selection= jmetal.operator.selection.BinaryTournamentSelection(), 
+                                    crossover=MaskcatSPXCrossover(0.7),
+                                    termination_criterion=StoppingByEvaluations(max_evaluations))
+
+        basic = observers.BasicObserver(frequency=1.0)
+        algorithm.observable.register(observer=basic)
+
+        progress_bar = observers.ProgressBarObserver(max=max_evaluations)
+        algorithm.observable.register(progress_bar)
+
+
+        maskcat_observer = MaskcatObserver(directory_generations, "maskcat_generaciones_{}.csv".format(tag), 1.0)
+        algorithm.observable.register(maskcat_observer)
+
+        algorithm.run()
+
+        solutions = algorithm.get_result()
+        print(str(solutions))
+
+        masksHistory = problem.get_masksHistory()
+        fd1 = open("{}/maskcatHistory_{}.csv".format(directory_results, tag), "w")
+        masksHistoryCSV = []
+        for line in masksHistory:
+            masksHistoryCSV.append("{};{};{}\n".format(line[0], line[1], line[2]))    
+        fd1.writelines(masksHistoryCSV)
+        fd1.close()
+
+        masksResults = problem.get_maskResults()
+        masksResults["Solution"] = str(solutions)
+
+        fd2 = open("{}/maskcatResults_{}.json".format(directory_results, tag), "w")
+        json.dump(masksResults, fd2)
+        fd2.close()
+
+        df = df.append({"Iteracion":i, "Puntuacion":solutions.getScore(), "Array":solutions.getMask()}, ignore_index=True)
+        scores.append(solutions.getScore())
+    
+    if repetitions > 1:
+
+        df.to_csv("{}/estadisticas_historico_{}.csv".format(directory_results, tag_backup), index=False, sep=";")
+
+        media = df["Puntuacion"].mean()
+        max = df["Puntuacion"].max()
+        min = df["Puntuacion"].min()
+        desv_est = df["Puntuacion"].std()
+        moda = df["Puntuacion"].mode()[0]
+        mediana = df["Puntuacion"].median()
+
+        fd3 = open("{}/estadisticas_{}.txt".format(directory_results, tag_backup), "w")
+        fd3.write('''Media = {}\nMax = {}\nMin = {}\nDesviacion estandar = {}\nModa = {}\nMediana = {}'''.format(media, min, max, desv_est, moda, mediana))
+        fd3.close()

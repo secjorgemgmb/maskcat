@@ -3,7 +3,7 @@ import os
 
 def cypherMD5(file):
     fd = open(file, "r", errors='ignore')
-    fd2 = open('top_1M_MD5.txt', 'w')
+    fd2 = open('shuffled_top_1M_MD5.txt', 'w')
     do = True
 
     while do:
@@ -22,4 +22,4 @@ def cypherMD5(file):
 
 
 
-cypherMD5('10-million-password-list-top-1000000.txt')
+cypherMD5('shuffled_10-million-password-list-top-1000000.txt')

@@ -46,6 +46,6 @@ def execHashcat (wordlist_route, mask):
     #print(str(recoveredHashes+ " - ") + str(timestampStart) + " - " + str(timestampEnd))
     #return [recoveredHashes, timestampStart, timestampEnd]
     # ó 
-    return -(recoveredHashes / (timestampStop - timestampStart))
+    return [-(recoveredHashes / (timestampStop - timestampStart)), (timestampStop - timestampStart)]
 
     

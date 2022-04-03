@@ -44,8 +44,8 @@ date = datetime.date.today()
 
 directory_generations = "../maskcat_generaciones/{}".format(date)
 directory_results = "../results/{}".format(date)
-tag = "maskcatNormal_10pred_{}".format(date)
-wordlist_route = "../wordlists/top_1M_MD5.txt"
+tag = "maskcat_pruebaCacheGlobal_{}".format(date)
+wordlist_route = "../wordlists/shuffled_top_1M_MD5.txt"
 run_type = 3
 
 # if run_type == 1:
@@ -72,13 +72,13 @@ run_type = 3
 # maskcat_execution(directory_generations=directory_generations, directory_results=directory_results, tag=tag, wordlist_route=wordlist_route, repetitions=1, population_size=50, max_evaluations=5000, mask_len=11, predefined_masks=0)
 # fin1 = datetime.datetime.now()
 
-tag = "maskcatLoop_0pred_{}".format(date)
+# tag = "maskcatLoop_0pred_{}".format(date)
 inicio2 = datetime.datetime.now()
 maskcat_execution(directory_generations=directory_generations, directory_results=directory_results, tag=tag, wordlist_route=wordlist_route, repetitions=30, population_size=50, max_evaluations=5000, mask_len=7, predefined_masks=0)
 fin2 = datetime.datetime.now()
 
-fd = open ("../times.txt", "w")
-fd.write('''Experimento : normal, 0 máscaras predefinidas, bucle 30 iteraciones
+fd = open ("../tiempos/times_{}.txt".format(tag), "w")
+fd.write('''Experimento : prueba chache global 
 Inicio: {}
 Fin: {}'''.format(inicio2, fin2))
 fd.close()

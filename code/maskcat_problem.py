@@ -27,6 +27,8 @@ mask_sets = [
 [1, 1, 1, 1, 3, 1, 3, 3], [3, 1, 1, 1, 3, 3, 3, 3], [3, 3, 1, 1, 1, 3, 3, 3], [3, 3, 3, 1, 3, 1, 0, 0], [3, 1, 3, 1, 1, 3, 0, 0], [3, 2, 1, 1, 1, 1, 1, 1], [1, 3, 1, 3, 1, 3, 1, 1], [3, 3, 1, 3, 1, 3, 0, 0], [1, 1, 1, 1, 1, 1, 1, 2], [3, 3, 3, 3, 3, 3, 3, 4], [1, 1, 1, 3, 1, 1, 3, 0], [3, 1, 3, 3, 3, 1, 0, 0], [3, 3, 1, 3, 1, 1, 0, 0], [1, 1, 3, 3, 1, 3, 1, 1], [1, 1, 1, 1, 4, 0, 0, 0], [1, 1, 3, 3, 1, 1, 1, 3], [2, 1, 1, 1, 1, 3, 1, 1], [1, 3, 1, 1, 1, 1, 3, 0], [3, 3, 3, 3, 2, 1, 1, 1], [3, 3, 1, 1, 3, 3, 3, 0], [1, 3, 1, 1, 3, 1, 1, 0], [2, 3, 1, 1, 1, 1, 1, 1], [3, 3, 3, 3, 1, 1, 1, 3], [3, 1, 1, 1, 0, 0, 0, 0], [1, 3, 3, 3, 3, 1, 1, 1], [3, 1, 1, 1, 1, 3, 3, 0], [3, 3, 3, 3, 3, 3, 8, 8], [1, 1, 3, 1, 1, 1, 3, 0], [1, 3, 1, 1, 3, 1, 3, 1], [1, 1, 1, 1, 1, 2, 0, 0], [4, 1, 1, 1, 1, 1, 1, 0], [3, 1, 1, 1, 1, 3, 1, 0], [1, 1, 3, 0, 0, 0, 0, 0], [3, 3, 1, 3, 3, 3, 3, 3], [2, 3, 3, 3, 3, 3, 3, 1], [3, 3, 3, 3, 3, 1, 3, 3], [3, 3, 3, 3, 1, 1, 3, 0], [2, 3, 3, 3, 3, 3, 3, 2], [1, 3, 3, 1, 3, 3, 3, 3], [3, 3, 3, 3, 2, 2, 2, 0], [1, 1, 1, 3, 3, 1, 1, 3], [1, 1, 1, 1, 1, 1, 2, 0], [1, 1, 1, 1, 1, 1, 4, 4], [1, 3, 1, 1, 1, 3, 1, 0], [3, 3, 2, 1, 1, 1, 1, 1], [3, 3, 3, 3, 3, 1, 3, 0], [3, 3, 3, 4, 3, 3, 3, 0], [3, 1, 1, 3, 1, 1, 3, 1], [2, 2, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 3, 3, 1, 3], [1, 3, 1, 3, 1, 3, 3, 0], [1, 1, 3, 1, 1, 3, 1, 0], [3, 3, 3, 1, 1, 1, 3, 0], [1, 3, 3, 0, 0, 0, 0, 0], [1, 3, 1, 3, 1, 1, 3, 1], [3, 1, 1, 1, 1, 3, 3, 3], [1, 1, 1, 1, 3, 3, 4, 0], [3, 3, 3, 1, 1, 3, 3, 0], [2, 1, 1, 1, 3, 0, 0, 0], [1, 3, 1, 1, 3, 1, 1, 3], [1, 3, 1, 3, 1, 1, 1, 0], [3, 3, 3, 3, 3, 3, 1, 2], [4, 1, 1, 1, 1, 1, 0, 0], [1, 3, 1, 3, 1, 0, 0, 0], [2, 1, 1, 2, 1, 1, 0, 0], [3, 3, 1, 1, 1, 1, 3, 0], [4, 1, 1, 0, 0, 0, 0, 0], [1, 1, 3, 1, 1, 3, 3, 0], [1, 1, 3, 1, 1, 2, 0, 0], [1, 3, 1, 3, 3, 3, 3, 3], [1, 1, 3, 1, 1, 3, 1, 3], [1, 3, 2, 1, 3, 2, 0, 0], [1, 3, 3, 1, 3, 3, 1, 0], [2, 1, 1, 1, 1, 2, 1, 1], [1, 1, 1, 1, 3, 3, 3, 4], [1, 1, 3, 3, 3, 3, 3, 1], [3, 3, 3, 2, 2, 2, 0, 0], [2, 1, 1, 1, 3, 1, 1, 1], [3, 1, 1, 1, 3, 1, 1, 0], [1, 3, 1, 3, 1, 1, 1, 3], [1, 3, 1, 1, 1, 3, 1, 3], [1, 1, 3, 1, 3, 1, 1, 3], [3, 3, 3, 1, 1, 1, 1, 3], [3, 1, 3, 3, 3, 3, 3, 0], [1, 3, 1, 1, 1, 3, 3, 1], [1, 2, 3, 1, 1, 2, 2, 3], [3, 3, 2, 2, 2, 2, 2, 2], [1, 1, 1, 3, 1, 3, 1, 0], [1, 1, 3, 3, 1, 1, 3, 0], [1, 1, 3, 3, 1, 1, 3, 1], [4, 1, 1, 1, 1, 1, 1, 1], [1, 3, 3, 1, 1, 1, 3, 3], [1, 3, 1, 1, 3, 3, 1, 1], [2, 1, 1, 1, 1, 1, 3, 1], [2, 1, 1, 3, 3, 1, 1, 1], [1, 1, 3, 1, 3, 1, 1, 0], [1, 3, 3, 3, 3, 3, 1, 1], [1, 1, 1, 1, 1, 8, 0, 0], [2, 1, 1, 3, 1, 1, 1, 1], [1, 1, 3, 1, 1, 3, 3, 1], [4, 2, 2, 2, 0, 0, 0, 0], [3, 1, 1, 1, 3, 3, 3, 0], [4, 1, 1, 1, 1, 1, 1, 4], [1, 1, 1, 3, 1, 3, 1, 3], [1, 1, 1, 1, 4, 4, 0, 0], [1, 1, 3, 1, 1, 3, 3, 3], [1, 3, 3, 3, 0, 0, 0, 0], [1, 3, 3, 1, 1, 3, 3, 1], [1, 3, 3, 1, 1, 1, 1, 3], [2, 1, 1, 1, 1, 4, 3, 3], [1, 3, 1, 1, 1, 3, 3, 3], [1, 1, 1, 3, 3, 1, 3, 3], [1, 3, 3, 3, 3, 1, 3, 3]
 ]
 
+masks_experiment = [[4, 3, 4, 1, 3, 3, 4, 2],[1, 1, 1, 2, 2, 2, 4, 1],[3, 3, 4, 4, 0, 0, 1, 2],[1, 3, 1, 1, 4, 0, 3, 1],[3, 4, 4, 2, 2, 3, 4, 4],[3, 1, 4, 3, 0, 4, 0, 3],[2, 2, 4, 3, 4, 1, 4, 1],[2, 2, 3, 2, 4, 4, 3, 4],[4, 3, 1, 2, 4, 1, 3, 4],[2, 1, 4, 3, 4, 3, 3, 4],[3, 1, 1, 1, 4, 3, 2, 1],[1, 3, 2, 1, 0, 0, 2, 0],[3, 2, 3, 4, 4, 1, 3, 1],[3, 2, 3, 1, 2, 4, 3, 4],[3, 3, 4, 3, 0, 0, 0, 3],[4, 2, 3, 3, 4, 2, 2, 3],[3, 1, 1, 2, 2, 2, 2, 3],[3, 2, 2, 3, 4, 1, 2, 0],[3, 1, 3, 3, 0, 0, 1, 4],[4, 3, 4, 2, 1, 4, 4, 0],[4, 2, 1, 1, 0, 0, 1, 2],[4, 1, 4, 3, 0, 3, 2, 0],[2, 3, 4, 3, 3, 4, 2, 1],[1, 1, 4, 4, 2, 3, 1, 0],[2, 2, 1, 3, 3, 4, 3, 2],[1, 4, 4, 1, 1, 1, 4, 4],[3, 3, 3, 2, 4, 1, 2, 1],[2, 3, 2, 1, 1, 0, 3, 0],[1, 2, 3, 3, 1, 2, 2, 3],[3, 1, 1, 2, 3, 1, 1, 3],[4, 2, 3, 2, 3, 1, 4, 4],[2, 1, 4, 1, 1, 0, 3, 4],[4, 1, 1, 1, 1, 2, 2, 4],[3, 4, 4, 1, 1, 3, 2, 1],[1, 2, 3, 3, 2, 2, 1, 1],[2, 2, 3, 3, 3, 4, 3, 0],[2, 4, 2, 4, 3, 2, 1, 2],[1, 1, 3, 3, 0, 1, 4, 2],[4, 3, 4, 3, 3, 4, 3, 1],[3, 3, 4, 3, 1, 1, 2, 2],[2, 1, 1, 3, 4, 3, 0, 0],[1, 1, 3, 3, 1, 1, 1, 4],[2, 4, 3, 3, 0, 2, 1, 4],[3, 4, 4, 3, 3, 0, 3, 2],[2, 1, 3, 3, 3, 4, 0, 4],[4, 2, 4, 1, 4, 4, 2, 0],[4, 3, 4, 1, 2, 2, 2, 3],[1, 1, 3, 2, 3, 1, 3, 2],[1, 4, 1, 1, 0, 4, 4, 2],[4, 2, 2, 3, 0, 2, 4, 0]]
+
 class MaskcatSolution (Solution):
     def __init__(self, number_of_variables: int, number_of_objectives: int, number_of_constraints: int = 0):
         super(MaskcatSolution, self).__init__(number_of_variables, number_of_objectives, number_of_constraints)
@@ -39,10 +41,10 @@ class MaskcatSolution (Solution):
         # self.attributes = {}
 
     def get_number_of_masks(self):
-        try:
-            return self.variables.index(0)
-        except:
-            return 8
+        # try:
+        #     return self.variables.index(0)
+        # except:
+        return self.number_of_variables
 
     def __copy__(self):
         new_solution = MaskcatSolution(
@@ -75,11 +77,11 @@ class MaskcatProblem (Problem):
     MINIMIZE = -1
     MAXIMIZE = 1
 
-    def __init__ (self, wordlist_route:str, generation_size:int, pass_len = 7, predefined_masks = 2):
+    def __init__ (self, cache, wordlist_route:str, generation_size:int, pass_len = 7, predefined_masks = 2):
         super(MaskcatProblem, self).__init__()
         
         self.masks = []
-        self.masksResults = {}
+        self.cache = cache
         self.masksHistory = []
 
         self.number_of_variables= pass_len
@@ -93,6 +95,8 @@ class MaskcatProblem (Problem):
         self.generation = 1
         self.generation_counter = 0
         self.generation_size = generation_size
+
+        self.experiment_counter = 0
 
         self.directions = [self.MAXIMIZE]
         self.labels = ['Maskcat']
@@ -132,7 +136,10 @@ class MaskcatProblem (Problem):
     def randomMask (self):
         randMask = []
         for i in range (0,self.number_of_variables+1):
-            chromosome = random.randint(0, 4)
+            if i < 4:
+                chromosome = random.randint(1, 4)
+            else:
+                chromosome = random.randint(0, 4)
             randMask.append(chromosome)
 
         # i = 0 
@@ -159,9 +166,12 @@ class MaskcatProblem (Problem):
         new_solution = MaskcatSolution(self.number_of_variables, self.number_of_objectives)
 
         if self.number_of_predefined_masks_inserted != self.number_of_predefined_masks:
-            predefined_mask = mask_sets[random.randint(0, len(mask_sets))]
-            while len(predefined_mask) != self.number_of_variables+1 and not(len(predefined_mask)>self.number_of_variables):
-                predefined_mask.append(0)
+            # predefined_mask = mask_sets[random.randint(0, len(mask_sets))]
+            # while len(predefined_mask) != self.number_of_variables+1 and not(len(predefined_mask)>self.number_of_variables):
+            #     predefined_mask.append(0)
+
+            predefined_mask = masks_experiment[self.experiment_counter]
+            self.experiment_counter += 1
 
             new_solution.variables = predefined_mask
             self.number_of_predefined_masks_inserted = self.number_of_predefined_masks_inserted + 1
@@ -180,16 +190,18 @@ class MaskcatProblem (Problem):
         mask = self.solutionToMask(solution.variables)
 
         if len(mask)>=8: # 4 ?x o más
-            if mask  not in self.masksResults:
+            if mask  not in self.cache:
                 print("Evaluating: {}".format(mask))
-                score = execHashcat(self.wordlist, mask)
-                self.masksResults[mask]={"Score":score,"Generation":self.generation} 
+                execution = execHashcat(self.wordlist, mask)
+                score = execution[0]
+                time = execution[1]
+                self.cache[mask]={"Score":score,"Time":time} 
             else:
-                score = self.masksResults.get(mask)["Score"]
+                score = self.cache.get(mask)["Score"]
         else:
             score = -0.0
 
-        self.masksHistory.append([mask, score, self.generation])
+        self.masksHistory.append([solution.variables, mask, score, self.generation])
         solution.objectives[0] =score
 
         if self.generation_counter == self.generation_size:
@@ -200,8 +212,8 @@ class MaskcatProblem (Problem):
     def get_name(self) -> str:
         return 'Maskcat'
 
-    def get_maskResults(self):
-        return self.masksResults
+    def get_cache(self):
+        return self.cache
 
     def get_masksHistory(self):
         return self.masksHistory

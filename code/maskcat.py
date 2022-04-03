@@ -178,12 +178,14 @@ def maskcat_execution(directory_generations:str, directory_results:str , tag:str
             LOGGER.warning('Directory {} does not exist. Creating it.'.format(directory_results))
             Path(directory_results).mkdir(parents=True)
 
+    cache = {}
+
     df = pd.DataFrame(columns=["Iteracion", "Puntuacion", "Array"])
     for i in range (0, repetitions):
         if repetitions > 1:
             tag = tag_backup + "_rep{}".format(i)
 
-        problem = MaskcatProblem(wordlist_route, pass_len=mask_len, predefined_masks=predefined_masks, generation_size=population_size)
+        problem = MaskcatProblem(cache, wordlist_route, pass_len=mask_len, predefined_masks=predefined_masks, generation_size=population_size)
 
         algorithm = GeneticAlgorithm(problem=problem,
                                     population_size=population_size, 
@@ -211,21 +213,26 @@ def maskcat_execution(directory_generations:str, directory_results:str , tag:str
         masksHistory = problem.get_masksHistory()
         fd1 = open("{}/maskcatHistory_{}.csv".format(directory_results, tag), "w")
         masksHistoryCSV = []
+        masksHistoryCSV.append("Array;Mask;Score;Generacion\n")
         for line in masksHistory:
-            masksHistoryCSV.append("{};{};{}\n".format(line[0], line[1], line[2]))    
+            masksHistoryCSV.append("{};{};{};{}\n".format(line[0], line[1], line[2], line[3]))    
         fd1.writelines(masksHistoryCSV)
         fd1.close()
 
-        masksResults = problem.get_maskResults()
-        masksResults["Solution"] = str(solutions)
+        # masksResults = problem.get_maskResults()
+        # masksResults["Solution"] = str(solutions)
 
-        fd2 = open("{}/maskcatResults_{}.json".format(directory_results, tag), "w")
-        json.dump(masksResults, fd2)
-        fd2.close()
+        # fd2 = open("{}/maskcatResults_{}.json".format(directory_results, tag), "w")
+        # json.dump(masksResults, fd2)
+        # fd2.close()
 
         df = df.append({"Iteracion":i, "Puntuacion":solutions.getScore(), "Array":solutions.getMask()}, ignore_index=True)
         scores.append(solutions.getScore())
-    
+
+    fd2 = open("{}/maskcatResults_{}.json".format(directory_results, tag), "w")
+    json.dump(cache, fd2)
+    fd2.close()
+
     if repetitions > 1:
 
         df.to_csv("{}/estadisticas_historico_{}.csv".format(directory_results, tag_backup), index=False, sep=";")

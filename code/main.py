@@ -74,7 +74,7 @@ run_type = 3
 
 # tag = "maskcatLoop_0pred_{}".format(date)
 inicio2 = datetime.datetime.now()
-maskcat_execution(directory_generations=directory_generations, directory_results=directory_results, tag=tag, wordlist_route=wordlist_route, repetitions=30, population_size=50, max_evaluations=5000, mask_len=7, predefined_masks=0)
+maskcat_execution(directory_generations=directory_generations, directory_results=directory_results, tag=tag, wordlist_route=wordlist_route, repetitions=2, population_size=50, max_evaluations=50, mask_len=7, predefined_masks=50)
 fin2 = datetime.datetime.now()
 
 fd = open ("../tiempos/times_{}.txt".format(tag), "w")

@@ -197,6 +197,7 @@ class MaskcatProblem (Problem):
                 time = execution[1]
                 self.cache[mask]={"Score":score,"Time":time} 
             else:
+                print("Mask in cache")
                 score = self.cache.get(mask)["Score"]
         else:
             score = -0.0

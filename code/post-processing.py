@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 
-def countGenerationsRepetitions (csvFile:str):
+def countGenerationsRepetitions (csvFile:str, outputFile:str):
     # Counts repetitions of solutions by generations
     historico = pd.read_csv(csvFile, sep=";")
     historico["Mask"] = historico["Mask"].fillna("_")
@@ -15,18 +15,18 @@ def countGenerationsRepetitions (csvFile:str):
             else:
                 generation_counter[row["Mask"]] = 1
         count[i] = generation_counter
-    fd = open("../measurements/prueba.json", "w")
+    fd = open(outputFile, "w")
     json.dump(count, fd)
     fd.close()
 
-def getArraysGenerations(csvFile:str):
+def getArraysGenerations(csvFile:str, outputFileCSV:str, outputFileJSON:str):
     # Gets array solutions in one line by generation
     historico = pd.read_csv(csvFile, sep=";")
     historicoJSON = {}
     generationLine = []
     generationPreviousLine = []
     newSolutions = []
-    fd = open("../measurements/generations_by_row.csv", "w")
+    fd = open(outputFileCSV, "w")
     fd.write("Generation;Array solutions;New solutions\n")
     for i in range (1, historico["Generacion"].max()+1):
         generation = historico.loc[historico["Generacion"]==i]
@@ -43,9 +43,14 @@ def getArraysGenerations(csvFile:str):
         generationLine = []    
         newSolutions = []
     fd.close()
-    fd2 = open("../measurements/generations_by_row.json", "w")
+    fd2 = open(outputFileJSON, "w")
     json.dump(historicoJSON, fd2)
     fd2.close()
 
-# countGenerationsRepetitions("../results/2022-03-26/maskcatHistory_maskcatLoop_0pred_2022-03-26_rep0.csv")
-getArraysGenerations("../results/2022-04-02/maskcatHistory_maskcat_2022-04-02_rep0.csv")
+for i in range(0, 30):
+    csvFile = "../results/2022-04-02/maskcatHistory_maskcat_2022-04-02_rep{}.csv".format(i)
+    outputFile1 = "../measurements/2022-04-02/repeticiones/repeticiones_maskcat_2022-04-02_rep{}.csv".format(i)
+    outputFile2 = "../measurements/2022-04-02/generaciones_por_fila/generationByRow_maskcat_2022-04-02_rep{}.csv".format(i)
+    outputFile3 = "../measurements/2022-04-02/generaciones_por_fila/generationByRow_maskcat_2022-04-02_rep{}.json".format(i)
+    countGenerationsRepetitions(csvFile, outputFile1)
+    getArraysGenerations(csvFile, outputFile2, outputFile3)

@@ -1,0 +1,5 @@
+2022-04-05 12:39:59,575 [MainThread  ] [WARNI]  Directory ../maskcat_generaciones/2022-04-05 does not exist. Creating it.
+2022-04-05 12:39:59,575 [MainThread  ] [WARNI]  Directory ../results/2022-04-05 does not exist. Creating it.
+2022-04-05 13:16:42,399 [MainThread  ] [INFO ]  Evaluations: 10 
+ Best fitness: [-0.0] 
+ Computing time: 2130.270924091339

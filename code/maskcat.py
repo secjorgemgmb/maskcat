@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 import os
 
-from maskcat_problem import MaskcatProblem, MaskcatSolution
+from maskcat_problem import MaskcatProblem
 
 from jmetal.algorithm.singleobjective import GeneticAlgorithm
 
@@ -168,7 +168,7 @@ def maskcat_single_longpass(tag:str, wordlist_route:str):
     fd2.close()
 
 
-def maskcat_execution(directory_generations:str, directory_results:str , tag:str, wordlist_route:str, repetitions:int, population_size:int, max_evaluations:int, mask_len:int, predefined_masks:int):
+def maskcat_execution(directory_generations:str, directory_results:str , tag:str, wordlist_route:str, repetitions:int, population_size:int, offspring_population_size:int, max_evaluations:int, mask_len:int, predefined_masks:int):
     tag_backup = tag
     
     if not Path(directory_generations).is_dir():
@@ -189,7 +189,7 @@ def maskcat_execution(directory_generations:str, directory_results:str , tag:str
 
         algorithm = GeneticAlgorithm(problem=problem,
                                     population_size=population_size, 
-                                    offspring_population_size=population_size, 
+                                    offspring_population_size=offspring_population_size, 
                                     mutation=MaskcatUniformMutation(0.1) , 
                                     selection= jmetal.operator.selection.BinaryTournamentSelection(), 
                                     crossover=MaskcatSPXCrossover(0.7),

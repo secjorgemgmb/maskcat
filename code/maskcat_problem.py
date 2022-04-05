@@ -1,5 +1,5 @@
 import random
-import json
+import copy
 
 from jmetal.core.problem import Problem
 from jmetal.core.solution import Solution
@@ -166,15 +166,12 @@ class MaskcatProblem (Problem):
         new_solution = MaskcatSolution(self.number_of_variables, self.number_of_objectives)
 
         if self.number_of_predefined_masks_inserted != self.number_of_predefined_masks:
-            # predefined_mask = mask_sets[random.randint(0, len(mask_sets))]
-            # while len(predefined_mask) != self.number_of_variables+1 and not(len(predefined_mask)>self.number_of_variables):
-            #     predefined_mask.append(0)
-
-            predefined_mask = masks_experiment[self.experiment_counter]
-            self.experiment_counter += 1
+            predefined_mask = copy.copy(mask_sets[random.randint(0, len(mask_sets))])
+            while len(predefined_mask) != self.number_of_variables+1 and not(len(predefined_mask)>self.number_of_variables):
+                predefined_mask.append(0)
 
             new_solution.variables = predefined_mask
-            self.number_of_predefined_masks_inserted = self.number_of_predefined_masks_inserted + 1
+            
         else:
             new_solution.variables = self.randomMask()
         # new_solution.variables = self.maskToSolution() #Metodo transformar de mascara a array ints -> devuelve lista

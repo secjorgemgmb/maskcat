@@ -1,12 +1,14 @@
 # maskcat
 TFG GICB - Jorge Martínez
 
-WINDOWS -> hashcat descargado desde la página, proyecto del TFG clonado de github en otra carpeta
-MAC -> hashcat clonado de github, proyecto del TFG clonado de github en otra carpeta
+## Ejecución
+- En fichero exec.py descomentar comando ejecución dependiendo del sistema operativo.
 
-#Ejecución del proyecto
-Copiar archivo maskcat.sh/cmd en la capeta de hashcat clonada en la que se encuentra el binario ejecutable de hashcat, modificat el archivo con la ruta en la que se encuentra el fichero main.py del proyecto y ejecutar el archivo maskcat.sh/cmd
+- En fichero main.py modificar las variables (línea 6 a 15) con los valores que se quieran pasar al algortimo.
 
-#Idea para posterior
-Dejar la opción de clonar el repositorio y mover el fichero maskcat.sh/cmd pero crear un dockerfile para ejecutar en docker (comprobar que funcione y no de Segmentation fault)
+Si se tiene hashcat ejecutable globalmente (fuera de la carpeta de descarga):
+- Desde carpeta "code" del proyecto ejecutar '''python3 main.py'''
 
+Si se tiene que ejecutar hashcat desde la carpeta de descarga:
+- Aconsejable copiar esta carpeta al interior del proyecto (no se sube poque en gitignore se obvia)
+- Desde carpeta de hashcat ejecutar '''python3 --/code/main.py'''

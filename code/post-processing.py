@@ -47,10 +47,17 @@ def getArraysGenerations(csvFile:str, outputFileCSV:str, outputFileJSON:str):
     json.dump(historicoJSON, fd2)
     fd2.close()
 
-for i in range(0, 30):
-    csvFile = "../results/2022-04-02/maskcatHistory_maskcat_2022-04-02_rep{}.csv".format(i)
-    outputFile1 = "../measurements/2022-04-02/repeticiones/repeticiones_maskcat_2022-04-02_rep{}.csv".format(i)
-    outputFile2 = "../measurements/2022-04-02/generaciones_por_fila/generationByRow_maskcat_2022-04-02_rep{}.csv".format(i)
-    outputFile3 = "../measurements/2022-04-02/generaciones_por_fila/generationByRow_maskcat_2022-04-02_rep{}.json".format(i)
-    countGenerationsRepetitions(csvFile, outputFile1)
-    getArraysGenerations(csvFile, outputFile2, outputFile3)
+# for i in range(0, 30):
+#     csvFile = "../results/2022-04-02/maskcatHistory_maskcat_2022-04-02_rep{}.csv".format(i)
+#     outputFile1 = "../measurements/2022-04-02/repeticiones/repeticiones_maskcat_2022-04-02_rep{}.json".format(i)
+#     outputFile2 = "../measurements/2022-04-02/generaciones_por_fila/generationByRow_maskcat_2022-04-02_rep{}.csv".format(i)
+#     outputFile3 = "../measurements/2022-04-02/generaciones_por_fila/generationByRow_maskcat_2022-04-02_rep{}.json".format(i)
+#     countGenerationsRepetitions(csvFile, outputFile1)
+#     getArraysGenerations(csvFile, outputFile2, outputFile3)
+
+csvFile = "../results/2022-04-15/maskcatHistory_maskcat_100_2_2022-04-15.csv"
+outputFile1 = "../measurements/poblacion_100/repeticiones_maskcat_100_2.json"
+outputFile2 = "../measurements/poblacion_100/generationByRow_maskcat_100_2.csv"
+outputFile3 = "../measurements/poblacion_100/generationByRow_maskcat_100_2.json"
+countGenerationsRepetitions(csvFile, outputFile1)
+getArraysGenerations(csvFile, outputFile2, outputFile3)

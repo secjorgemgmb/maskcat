@@ -5,12 +5,12 @@ date = datetime.date.today()
 
 directory_generations = "../maskcat_generaciones/{}".format(date)
 directory_results = "../results/{}".format(date)
-tag = "maskcat_pruebaCacheGlobal_{}".format(date)
+tag = "maskcat_100_2_{}".format(date)
 wordlist_route = "../wordlists/shuffled_top_1M_MD5.txt"
 repetitions=1
-population_size=50
-offspring_population_size = 50
-max_evaluations=5000
+population_size=100
+offspring_population_size = 100
+max_evaluations=10000
 mask_len=7
 predefined_masks=0
 
@@ -27,7 +27,7 @@ maskcat_execution(directory_generations=directory_generations,
 fin = datetime.datetime.now()
 
 fd = open ("../tiempos/times_{}.txt".format(tag), "w")
-fd.write('''Experimento : prueba chache global 
+fd.write('''Experimento : maskcat poblacion inicial 100 máscaras
 Inicio: {}
 Fin: {}'''.format(inicio, fin))
 fd.close()

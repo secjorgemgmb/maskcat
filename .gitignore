@@ -4,3 +4,4 @@ jmetal/*
 *.restore
 *.outfile
 *.pyc
+hashcat/*

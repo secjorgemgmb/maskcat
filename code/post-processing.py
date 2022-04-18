@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 
-def countGenerationsRepetitions (csvFile:str, outputFile:str):
+def count_generations_repetitions (csvFile:str, outputFile:str):
     # Counts repetitions of solutions by generations
     historico = pd.read_csv(csvFile, sep=";")
     historico["Mask"] = historico["Mask"].fillna("_")
@@ -19,7 +19,7 @@ def countGenerationsRepetitions (csvFile:str, outputFile:str):
     json.dump(count, fd)
     fd.close()
 
-def getArraysGenerations(csvFile:str, outputFileCSV:str, outputFileJSON:str):
+def get_arrays_generations(csvFile:str, outputFileCSV:str, outputFileJSON:str):
     # Gets array solutions in one line by generation
     historico = pd.read_csv(csvFile, sep=";")
     historicoJSON = {}
@@ -52,12 +52,12 @@ def getArraysGenerations(csvFile:str, outputFileCSV:str, outputFileJSON:str):
 #     outputFile1 = "../measurements/2022-04-02/repeticiones/repeticiones_maskcat_2022-04-02_rep{}.json".format(i)
 #     outputFile2 = "../measurements/2022-04-02/generaciones_por_fila/generationByRow_maskcat_2022-04-02_rep{}.csv".format(i)
 #     outputFile3 = "../measurements/2022-04-02/generaciones_por_fila/generationByRow_maskcat_2022-04-02_rep{}.json".format(i)
-#     countGenerationsRepetitions(csvFile, outputFile1)
-#     getArraysGenerations(csvFile, outputFile2, outputFile3)
+#     count_generations_repetitions(csvFile, outputFile1)
+#     get_arrays_generations(csvFile, outputFile2, outputFile3)
 
-csvFile = "../results/2022-04-15/maskcatHistory_maskcat_100_2_2022-04-15.csv"
-outputFile1 = "../measurements/poblacion_100/repeticiones_maskcat_100_2.json"
-outputFile2 = "../measurements/poblacion_100/generationByRow_maskcat_100_2.csv"
-outputFile3 = "../measurements/poblacion_100/generationByRow_maskcat_100_2.json"
-countGenerationsRepetitions(csvFile, outputFile1)
-getArraysGenerations(csvFile, outputFile2, outputFile3)
+csv_file = "../results/2022-04-15/maskcatHistory_maskcat_100_2_2022-04-15.csv"
+output_file1 = "../measurements/poblacion_100/repeticiones_maskcat_100_2.json"
+output_file2 = "../measurements/poblacion_100/generationByRow_maskcat_100_2.csv"
+output_file3 = "../measurements/poblacion_100/generationByRow_maskcat_100_2.json"
+count_generations_repetitions(csv_file, output_file1)
+get_arrays_generations(csv_file, output_file2, output_file3)

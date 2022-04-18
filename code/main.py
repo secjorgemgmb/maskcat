@@ -1,23 +1,21 @@
 import datetime
-from maskcat import maskcat_execution
+from maskcat import Maskcat
 
 date = datetime.date.today()
 
-directory_generations = "../maskcat_generaciones/{}".format(date)
-directory_results = "../results/{}".format(date)
-tag = "maskcat_100_2_{}".format(date)
+directory = "../maskcat_{}".format(date)
 wordlist_route = "../wordlists/shuffled_top_1M_MD5.txt"
 repetitions=1
-population_size=100
-offspring_population_size = 100
-max_evaluations=10000
+population_size=6
+offspring_population_size = 6
+max_evaluations=100
 mask_len=7
 predefined_masks=0
 
 inicio = datetime.datetime.now()
-maskcat_execution(directory_generations=directory_generations,
-    directory_results=directory_results,
-    tag=tag, wordlist_route=wordlist_route,
+Maskcat(False).run(OS="UNIX",
+    main_directory=directory,
+    wordlist_route=wordlist_route,
     repetitions=repetitions,
     population_size=population_size,
     offspring_population_size=offspring_population_size,
@@ -26,8 +24,8 @@ maskcat_execution(directory_generations=directory_generations,
     predefined_masks=predefined_masks)
 fin = datetime.datetime.now()
 
-fd = open ("../tiempos/times_{}.txt".format(tag), "w")
-fd.write('''Experimento : maskcat poblacion inicial 100 máscaras
+fd = open ("{}/times/times.txt".format(directory), "w")
+fd.write('''Experimento : maskcat
 Inicio: {}
 Fin: {}'''.format(inicio, fin))
 fd.close()

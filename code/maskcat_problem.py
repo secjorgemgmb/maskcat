@@ -1,11 +1,11 @@
 import random
-import json
+import copy
 
 from jmetal.core.problem import Problem
 from jmetal.core.solution import Solution
-# from newfunctions import maskToSolution
 
-from exec import execHashcat
+
+from exec import HashcatExecution
 
 
 #   l | abcdefghijklmnopqrstuvwxyz [a-z]
@@ -17,33 +17,21 @@ from exec import execHashcat
 #   a | ?l?u?d?s
 #   b | 0x00 - 0xff
 
-maskChromosomes=['\0','l','u','d','h','H','s','a','b']
-chromosomesMask = {0:'\0',1:'?l',2:'?u',3:'?d',4:'?s',5:'?h',6:'?H',7:'?a',8:'?b'}
+MASK_GENS=['\0','l','u','d','h','H','s','a','b']
+GENS_MASK = {0:'\0',1:'?l',2:'?u',3:'?d',4:'?s',5:'?h',6:'?H',7:'?a',8:'?b'}
 
 # masks_sets = [[3,3,3,3,3,3,0,3],[1,1,1,1,3,3,0,0],[1,1,1,1,1,1,1,0],[2,1,1,1,1,1,3,0],[3,3,1,1,1,1,0,0]]
-mask_sets = [
+MASK_SETS = [
 [1, 1, 1, 1, 1, 1, 1, 1], [3, 3, 3, 3, 3, 3, 0, 0], [1, 1, 1, 1, 1, 1, 0, 0], [3, 3, 3, 3, 3, 3, 3, 3], [1, 1, 1, 1, 1, 1, 1, 0], [1, 1, 1, 1, 1, 1, 3, 3], [3, 3, 3, 3, 3, 3, 3, 0], [1, 1, 1, 1, 1, 1, 1, 3], [1, 1, 1, 1, 1, 1, 3, 0], [1, 1, 1, 1, 3, 3, 3, 3], [1, 1, 1, 1, 1, 3, 3, 0], [1, 1, 1, 1, 1, 0, 0, 0], [1, 1, 1, 1, 1, 3, 3, 3], [1, 1, 1, 1, 3, 3, 0, 0], [1, 1, 1, 1, 1, 3, 0, 0], [3, 3, 3, 3, 3, 0, 0, 0], [3, 3, 3, 3, 3, 3, 1, 0], [1, 1, 1, 1, 3, 3, 3, 0], [1, 1, 1, 3, 3, 3, 3, 0], [1, 1, 1, 3, 3, 3, 0, 0], [3, 3, 3, 3, 0, 0, 0, 0], [1, 1, 1, 1, 0, 0, 0, 0], [1, 1, 3, 3, 3, 3, 0, 0], [1, 3, 3, 3, 3, 3, 3, 0], [1, 1, 3, 3, 3, 3, 3, 3], [3, 3, 1, 1, 1, 1, 0, 0], [3, 3, 3, 3, 3, 3, 1, 1], [2, 2, 2, 2, 2, 2, 2, 0], [3, 3, 3, 3, 3, 3, 3, 1], [2, 1, 1, 1, 1, 1, 3, 3], [2, 1, 1, 1, 1, 1, 1, 1], [2, 1, 1, 1, 1, 1, 0, 0], [1, 1, 1, 0, 0, 0, 0, 0], [3, 3, 3, 3, 1, 1, 1, 1], [1, 3, 3, 3, 3, 3, 3, 3], [3, 1, 3, 1, 3, 1, 0, 0], [1, 1, 1, 3, 3, 3, 3, 3], [3, 3, 1, 1, 1, 1, 1, 1], [2, 1, 1, 1, 1, 1, 1, 0], [2, 2, 2, 2, 2, 2, 0, 0], [3, 3, 1, 1, 1, 1, 1, 0], [3, 3, 3, 0, 0, 0, 0, 0], [3, 1, 1, 1, 1, 1, 1, 1], [3, 3, 3, 1, 1, 1, 0, 0], [3, 3, 3, 3, 1, 1, 0, 0], [2, 1, 1, 1, 3, 3, 3, 3], [2, 1, 1, 1, 1, 1, 1, 3], [3, 3, 3, 3, 1, 1, 1, 0], [2, 2, 2, 2, 2, 2, 2, 2], [3, 3, 3, 3, 3, 1, 0, 0], [3, 1, 1, 1, 1, 1, 1, 0], [2, 1, 1, 1, 1, 3, 3, 3], [1, 3, 3, 3, 3, 3, 0, 0], [1, 1, 3, 3, 3, 3, 3, 0], [3, 1, 1, 1, 1, 1, 0, 0], [1, 1, 1, 1, 1, 1, 4, 0], [1, 1, 1, 3, 3, 1, 1, 1], [1, 1, 1, 1, 3, 0, 0, 0], [3, 3, 3, 1, 1, 1, 1, 1], [1, 1, 1, 3, 3, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 4], [2, 1, 1, 1, 1, 0, 0, 0], [1, 1, 1, 3, 1, 1, 1, 1], [3, 3, 1, 1, 1, 0, 0, 0], [1, 3, 1, 3, 1, 3, 1, 3], [1, 1, 1, 1, 3, 1, 1, 1], [3, 1, 3, 1, 3, 1, 3, 1], [1, 1, 1, 1, 1, 3, 1, 1], [3, 3, 3, 3, 3, 1, 1, 1], [3, 3, 3, 1, 1, 1, 1, 0], [2, 1, 1, 1, 1, 3, 3, 0], [1, 1, 1, 1, 1, 1, 3, 1], [1, 3, 1, 3, 1, 3, 0, 0], [1, 1, 1, 1, 3, 1, 0, 0], [1, 3, 3, 3, 3, 3, 3, 1], [2, 2, 2, 2, 2, 2, 3, 3], [1, 1, 1, 3, 1, 1, 0, 0], [3, 1, 1, 1, 1, 1, 1, 3], [2, 1, 1, 1, 1, 1, 3, 0], [1, 1, 3, 1, 1, 1, 0, 0], [1, 3, 1, 1, 1, 1, 1, 1], [1, 3, 1, 1, 1, 1, 0, 0], [3, 3, 1, 1, 1, 1, 3, 3], [1, 1, 1, 1, 1, 4, 0, 0], [1, 1, 3, 1, 1, 1, 1, 1], [3, 1, 1, 1, 3, 1, 1, 1], [1, 3, 3, 3, 3, 1, 0, 0], [2, 2, 2, 2, 3, 3, 3, 3], [1, 1, 1, 3, 1, 1, 1, 0], [2, 2, 2, 2, 2, 0, 0, 0], [3, 3, 3, 3, 3, 1, 1, 0], [3, 3, 3, 3, 3, 3, 2, 0], [4, 1, 1, 1, 1, 0, 0, 0], [1, 1, 3, 3, 3, 3, 1, 1], [1, 1, 1, 1, 3, 1, 1, 0], [1, 3, 3, 3, 1, 1, 0, 0], [1, 1, 1, 1, 1, 3, 3, 1], [1, 1, 3, 3, 1, 1, 0, 0], [1, 1, 1, 1, 1, 4, 3, 3], [2, 1, 1, 1, 1, 3, 0, 0], [2, 1, 1, 1, 3, 3, 0, 0], [1, 1, 1, 1, 1, 3, 1, 0], [1, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 3, 3, 1, 1], [3, 3, 1, 1, 1, 3, 3, 0], [1, 1, 3, 3, 1, 1, 3, 3], [1, 1, 1, 3, 1, 1, 1, 3], [1, 1, 3, 1, 1, 1, 1, 0], [3, 3, 3, 3, 1, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0], [2, 1, 3, 3, 3, 3, 3, 3], [2, 3, 3, 3, 3, 3, 3, 0], [1, 1, 3, 3, 3, 0, 0, 0], [1, 1, 1, 4, 1, 1, 1, 0], [2, 2, 2, 2, 2, 2, 2, 3], [2, 1, 1, 1, 3, 3, 3, 0], [3, 3, 1, 1, 3, 3, 0, 0], [1, 3, 3, 3, 3, 0, 0, 0], [2, 2, 2, 2, 2, 3, 3, 3], [2, 2, 2, 2, 2, 2, 3, 0], [1, 1, 1, 1, 4, 1, 1, 1], [2, 2, 2, 3, 3, 3, 3, 0], [3, 1, 1, 1, 1, 3, 0, 0], [1, 1, 3, 3, 1, 1, 1, 1], [2, 2, 2, 2, 2, 3, 3, 0], [2, 1, 1, 1, 0, 0, 0, 0], [1, 1, 1, 3, 3, 1, 0, 0], [1, 3, 1, 1, 1, 1, 1, 0], [1, 3, 3, 1, 3, 3, 0, 0], [2, 2, 2, 2, 3, 3, 0, 0], [1, 1, 1, 3, 3, 3, 1, 1], [1, 1, 1, 1, 4, 3, 3, 0], [1, 1, 1, 1, 1, 1, 4, 3], [1, 1, 1, 4, 1, 1, 1, 1], [3, 3, 0, 0, 0, 0, 0, 0], [1, 3, 1, 1, 3, 1, 0, 0], [3, 3, 3, 3, 3, 3, 4, 0], [2, 2, 2, 2, 0, 0, 0, 0], 
 [1, 1, 1, 1, 3, 3, 1, 0], [3, 0, 0, 0, 0, 0, 0, 0], [1, 1, 3, 1, 1, 3, 0, 0], [2, 2, 2, 2, 2, 3, 0, 0], [3, 3, 3, 1, 3, 3, 3, 0], [3, 1, 1, 1, 1, 1, 3, 0], [2, 2, 3, 3, 3, 3, 3, 3], [2, 1, 1, 1, 1, 1, 2, 0], [2, 1, 1, 3, 3, 3, 3, 0], [2, 3, 3, 3, 3, 3, 3, 3], [1, 3, 3, 1, 1, 1, 0, 0], [1, 1, 1, 3, 3, 3, 3, 1], [2, 2, 2, 3, 3, 3, 0, 0], [3, 3, 3, 3, 3, 3, 3, 2], [1, 1, 1, 3, 3, 1, 1, 0], [3, 3, 3, 3, 3, 3, 2, 2], [1, 1, 1, 1, 3, 3, 3, 1], [2, 2, 3, 3, 3, 3, 0, 0], [1, 3, 1, 3, 1, 1, 0, 0], [1, 1, 3, 3, 3, 1, 1, 0], [1, 1, 1, 3, 1, 3, 0, 0], [1, 3, 3, 1, 1, 1, 1, 1], [3, 3, 3, 1, 3, 3, 0, 0], [3, 3, 1, 3, 3, 1, 0, 0], [2, 2, 2, 2, 3, 3, 3, 0], [3, 3, 3, 3, 1, 1, 3, 3], [1, 1, 1, 1, 1, 3, 1, 3], [1, 1, 1, 3, 3, 3, 1, 0], [1, 3, 3, 3, 3, 3, 1, 0], [2, 2, 3, 3, 3, 3, 3, 0], [1, 1, 1, 1, 4, 1, 1, 0], [1, 1, 3, 3, 1, 1, 1, 0], [1, 1, 3, 1, 1, 3, 1, 1], [1, 3, 1, 1, 1, 3, 0, 0], [3, 3, 1, 1, 3, 3, 1, 1], [1, 3, 1, 1, 1, 3, 1, 1], [1, 1, 3, 1, 1, 1, 1, 3], [1, 1, 3, 3, 3, 1, 0, 0], [3, 3, 1, 3, 3, 3, 0, 0], [2, 1, 1, 3, 3, 3, 3, 3], [3, 3, 3, 3, 3, 3, 1, 3], [1, 1, 1, 1, 1, 4, 3, 0], [1, 1, 1, 1, 3, 1, 1, 3], [1, 1, 1, 1, 1, 4, 1, 1], [1, 1, 3, 1, 3, 1, 0, 0], [2, 1, 1, 0, 0, 0, 0, 0], [3, 1, 1, 1, 3, 1, 0, 0], [2, 1, 1, 3, 3, 3, 0, 0], [1, 1, 1, 1, 4, 3, 3, 3], [3, 1, 3, 1, 1, 1, 0, 0], [3, 1, 1, 3, 1, 1, 0, 0], [3, 3, 3, 1, 1, 3, 3, 3], [1, 1, 1, 1, 1, 4, 1, 0], [3, 3, 3, 3, 1, 3, 0, 0], [3, 1, 1, 1, 1, 0, 0, 0], [1, 1, 1, 3, 0, 0, 0, 0], [1, 1, 1, 4, 3, 3, 3, 3], [1, 1, 4, 1, 1, 1, 1, 1], [1, 3, 1, 1, 1, 1, 3, 1], [2, 2, 2, 0, 0, 0, 0, 0], [3, 1, 3, 3, 3, 3, 0, 0], [1, 3, 1, 1, 1, 1, 1, 3], [3, 1, 1, 1, 1, 1, 3, 3], [1, 1, 1, 1, 1, 1, 4, 1], [1, 3, 1, 3, 1, 1, 1, 1], [3, 1, 1, 1, 3, 3, 0, 0], [1, 1, 3, 3, 3, 1, 1, 1], [1, 1, 1, 1, 3, 1, 3, 1], [1, 1, 1, 4, 3, 3, 0, 0], [1, 3, 1, 1, 3, 1, 1, 1], [1, 1, 3, 1, 1, 1, 3, 1], [1, 3, 3, 3, 1, 3, 3, 3], [3, 3, 4, 3, 3, 4, 3, 3], [4, 0, 0, 0, 0, 0, 0, 0], [1, 1, 4, 1, 1, 1, 1, 0], [3, 3, 1, 1, 3, 3, 3, 3], [1, 4, 1, 1, 1, 1, 1, 0], [1, 1, 1, 3, 1, 1, 3, 1], [1, 1, 3, 1, 3, 1, 1, 1], [2, 1, 1, 1, 1, 2, 0, 0], [1, 1, 1, 3, 1, 3, 1, 1], [1, 1, 3, 1, 3, 1, 3, 1], [3, 3, 1, 3, 3, 3, 3, 0], [3, 1, 1, 1, 1, 3, 1, 1], [1, 4, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 3, 4], [2, 1, 1, 1, 1, 1, 1, 2], [3, 3, 1, 3, 3, 1, 3, 3], [1, 3, 1, 3, 1, 3, 1, 0], [1, 1, 1, 4, 1, 1, 0, 0], [1, 3, 1, 3, 3, 3, 0, 0], [1, 1, 1, 1, 1, 3, 3, 4], [1, 3, 3, 3, 1, 1, 3, 3], [2, 3, 3, 3, 3, 3, 0, 0], [2, 1, 1, 1, 2, 1, 1, 1], [3, 1, 1, 3, 1, 1, 1, 1], [3, 3, 1, 1, 1, 3, 0, 0], [3, 3, 3, 3, 3, 2, 0, 0], [2, 2, 2, 3, 3, 3, 3, 3], [3, 1, 1, 1, 1, 1, 3, 1], [1, 1, 1, 1, 4, 1, 0, 0], [3, 3, 3, 1, 3, 3, 3, 1], [1, 3, 1, 1, 3, 3, 0, 0], [3, 3, 3, 1, 1, 1, 3, 3], [3, 1, 3, 1, 1, 1, 1, 1], [1, 1, 3, 3, 3, 3, 1, 0], [3, 3, 3, 3, 3, 3, 2, 1], [1, 1, 1, 3, 1, 0, 0, 0], [3, 3, 3, 1, 1, 3, 0, 0], [1, 1, 1, 1, 4, 3, 0, 0], [2, 0, 0, 0, 0, 0, 0, 0], [1, 1, 3, 3, 1, 3, 0, 0], [3, 1, 3, 1, 3, 1, 3, 0], [1, 4, 1, 1, 1, 1, 0, 0], [1, 3, 3, 3, 1, 1, 1, 0], [1, 1, 4, 1, 1, 1, 0, 0], [1, 1, 3, 1, 3, 3, 0, 0], [3, 3, 1, 1, 1, 1, 1, 3], [3, 1, 3, 1, 3, 3, 0, 0], [3, 3, 3, 1, 1, 0, 0, 0], [1, 3, 3, 1, 1, 3, 0, 0], [1, 1, 1, 1, 1, 1, 1, 8], [1, 1, 3, 1, 1, 0, 0, 0], [1, 3, 3, 3, 1, 3, 0, 0], [3, 1, 1, 3, 3, 3, 0, 0], [3, 3, 3, 3, 1, 3, 3, 0], [1, 3, 1, 1, 1, 0, 0, 0], [3, 1, 1, 3, 3, 1, 0, 0], [1, 1, 1, 3, 1, 1, 3, 3], [1, 3, 3, 1, 1, 1, 1, 0], [1, 3, 3, 3, 3, 1, 1, 0], [3, 1, 3, 3, 1, 3, 0, 0], [1, 1, 1, 1, 1, 1, 8, 0], [1, 3, 1, 3, 3, 1, 0, 0], [1, 3, 3, 1, 3, 1, 0, 0], [1, 1, 1, 1, 3, 1, 3, 0], [3, 1, 1, 3, 1, 3, 0, 0], [3, 3, 3, 1, 3, 3, 3, 3], [1, 3, 3, 3, 1, 1, 1, 2], [1, 3, 1, 1, 1, 1, 3, 3], [3, 3, 3, 3, 1, 3, 3, 3], [1, 3, 3, 3, 1, 1, 1, 1], [3, 3, 3, 3, 2, 2, 0, 0], [1, 1, 3, 1, 1, 1, 3, 3], [3, 3, 1, 1, 3, 1, 0, 0], [3, 1, 3, 3, 3, 3, 3, 3], [3, 1, 3, 3, 1, 1, 0, 0], [1, 1, 1, 4, 3, 3, 3, 0], [1, 1, 3, 3, 0, 0, 0, 0], [3, 3, 3, 3, 2, 2, 2, 2], [2, 2, 1, 1, 1, 1, 0, 0], [2, 1, 3, 3, 3, 3, 0, 0], [1, 3, 3, 1, 1, 2, 1, 1], 
 [1, 1, 1, 1, 3, 1, 3, 3], [3, 1, 1, 1, 3, 3, 3, 3], [3, 3, 1, 1, 1, 3, 3, 3], [3, 3, 3, 1, 3, 1, 0, 0], [3, 1, 3, 1, 1, 3, 0, 0], [3, 2, 1, 1, 1, 1, 1, 1], [1, 3, 1, 3, 1, 3, 1, 1], [3, 3, 1, 3, 1, 3, 0, 0], [1, 1, 1, 1, 1, 1, 1, 2], [3, 3, 3, 3, 3, 3, 3, 4], [1, 1, 1, 3, 1, 1, 3, 0], [3, 1, 3, 3, 3, 1, 0, 0], [3, 3, 1, 3, 1, 1, 0, 0], [1, 1, 3, 3, 1, 3, 1, 1], [1, 1, 1, 1, 4, 0, 0, 0], [1, 1, 3, 3, 1, 1, 1, 3], [2, 1, 1, 1, 1, 3, 1, 1], [1, 3, 1, 1, 1, 1, 3, 0], [3, 3, 3, 3, 2, 1, 1, 1], [3, 3, 1, 1, 3, 3, 3, 0], [1, 3, 1, 1, 3, 1, 1, 0], [2, 3, 1, 1, 1, 1, 1, 1], [3, 3, 3, 3, 1, 1, 1, 3], [3, 1, 1, 1, 0, 0, 0, 0], [1, 3, 3, 3, 3, 1, 1, 1], [3, 1, 1, 1, 1, 3, 3, 0], [3, 3, 3, 3, 3, 3, 8, 8], [1, 1, 3, 1, 1, 1, 3, 0], [1, 3, 1, 1, 3, 1, 3, 1], [1, 1, 1, 1, 1, 2, 0, 0], [4, 1, 1, 1, 1, 1, 1, 0], [3, 1, 1, 1, 1, 3, 1, 0], [1, 1, 3, 0, 0, 0, 0, 0], [3, 3, 1, 3, 3, 3, 3, 3], [2, 3, 3, 3, 3, 3, 3, 1], [3, 3, 3, 3, 3, 1, 3, 3], [3, 3, 3, 3, 1, 1, 3, 0], [2, 3, 3, 3, 3, 3, 3, 2], [1, 3, 3, 1, 3, 3, 3, 3], [3, 3, 3, 3, 2, 2, 2, 0], [1, 1, 1, 3, 3, 1, 1, 3], [1, 1, 1, 1, 1, 1, 2, 0], [1, 1, 1, 1, 1, 1, 4, 4], [1, 3, 1, 1, 1, 3, 1, 0], [3, 3, 2, 1, 1, 1, 1, 1], [3, 3, 3, 3, 3, 1, 3, 0], [3, 3, 3, 4, 3, 3, 3, 0], [3, 1, 1, 3, 1, 1, 3, 1], [2, 2, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 3, 3, 1, 3], [1, 3, 1, 3, 1, 3, 3, 0], [1, 1, 3, 1, 1, 3, 1, 0], [3, 3, 3, 1, 1, 1, 3, 0], [1, 3, 3, 0, 0, 0, 0, 0], [1, 3, 1, 3, 1, 1, 3, 1], [3, 1, 1, 1, 1, 3, 3, 3], [1, 1, 1, 1, 3, 3, 4, 0], [3, 3, 3, 1, 1, 3, 3, 0], [2, 1, 1, 1, 3, 0, 0, 0], [1, 3, 1, 1, 3, 1, 1, 3], [1, 3, 1, 3, 1, 1, 1, 0], [3, 3, 3, 3, 3, 3, 1, 2], [4, 1, 1, 1, 1, 1, 0, 0], [1, 3, 1, 3, 1, 0, 0, 0], [2, 1, 1, 2, 1, 1, 0, 0], [3, 3, 1, 1, 1, 1, 3, 0], [4, 1, 1, 0, 0, 0, 0, 0], [1, 1, 3, 1, 1, 3, 3, 0], [1, 1, 3, 1, 1, 2, 0, 0], [1, 3, 1, 3, 3, 3, 3, 3], [1, 1, 3, 1, 1, 3, 1, 3], [1, 3, 2, 1, 3, 2, 0, 0], [1, 3, 3, 1, 3, 3, 1, 0], [2, 1, 1, 1, 1, 2, 1, 1], [1, 1, 1, 1, 3, 3, 3, 4], [1, 1, 3, 3, 3, 3, 3, 1], [3, 3, 3, 2, 2, 2, 0, 0], [2, 1, 1, 1, 3, 1, 1, 1], [3, 1, 1, 1, 3, 1, 1, 0], [1, 3, 1, 3, 1, 1, 1, 3], [1, 3, 1, 1, 1, 3, 1, 3], [1, 1, 3, 1, 3, 1, 1, 3], [3, 3, 3, 1, 1, 1, 1, 3], [3, 1, 3, 3, 3, 3, 3, 0], [1, 3, 1, 1, 1, 3, 3, 1], [1, 2, 3, 1, 1, 2, 2, 3], [3, 3, 2, 2, 2, 2, 2, 2], [1, 1, 1, 3, 1, 3, 1, 0], [1, 1, 3, 3, 1, 1, 3, 0], [1, 1, 3, 3, 1, 1, 3, 1], [4, 1, 1, 1, 1, 1, 1, 1], [1, 3, 3, 1, 1, 1, 3, 3], [1, 3, 1, 1, 3, 3, 1, 1], [2, 1, 1, 1, 1, 1, 3, 1], [2, 1, 1, 3, 3, 1, 1, 1], [1, 1, 3, 1, 3, 1, 1, 0], [1, 3, 3, 3, 3, 3, 1, 1], [1, 1, 1, 1, 1, 8, 0, 0], [2, 1, 1, 3, 1, 1, 1, 1], [1, 1, 3, 1, 1, 3, 3, 1], [4, 2, 2, 2, 0, 0, 0, 0], [3, 1, 1, 1, 3, 3, 3, 0], [4, 1, 1, 1, 1, 1, 1, 4], [1, 1, 1, 3, 1, 3, 1, 3], [1, 1, 1, 1, 4, 4, 0, 0], [1, 1, 3, 1, 1, 3, 3, 3], [1, 3, 3, 3, 0, 0, 0, 0], [1, 3, 3, 1, 1, 3, 3, 1], [1, 3, 3, 1, 1, 1, 1, 3], [2, 1, 1, 1, 1, 4, 3, 3], [1, 3, 1, 1, 1, 3, 3, 3], [1, 1, 1, 3, 3, 1, 3, 3], [1, 3, 3, 3, 3, 1, 3, 3]
 ]
 
-masks_experiment = [[4, 3, 4, 1, 3, 3, 4, 2],[1, 1, 1, 2, 2, 2, 4, 1],[3, 3, 4, 4, 0, 0, 1, 2],[1, 3, 1, 1, 4, 0, 3, 1],[3, 4, 4, 2, 2, 3, 4, 4],[3, 1, 4, 3, 0, 4, 0, 3],[2, 2, 4, 3, 4, 1, 4, 1],[2, 2, 3, 2, 4, 4, 3, 4],[4, 3, 1, 2, 4, 1, 3, 4],[2, 1, 4, 3, 4, 3, 3, 4],[3, 1, 1, 1, 4, 3, 2, 1],[1, 3, 2, 1, 0, 0, 2, 0],[3, 2, 3, 4, 4, 1, 3, 1],[3, 2, 3, 1, 2, 4, 3, 4],[3, 3, 4, 3, 0, 0, 0, 3],[4, 2, 3, 3, 4, 2, 2, 3],[3, 1, 1, 2, 2, 2, 2, 3],[3, 2, 2, 3, 4, 1, 2, 0],[3, 1, 3, 3, 0, 0, 1, 4],[4, 3, 4, 2, 1, 4, 4, 0],[4, 2, 1, 1, 0, 0, 1, 2],[4, 1, 4, 3, 0, 3, 2, 0],[2, 3, 4, 3, 3, 4, 2, 1],[1, 1, 4, 4, 2, 3, 1, 0],[2, 2, 1, 3, 3, 4, 3, 2],[1, 4, 4, 1, 1, 1, 4, 4],[3, 3, 3, 2, 4, 1, 2, 1],[2, 3, 2, 1, 1, 0, 3, 0],[1, 2, 3, 3, 1, 2, 2, 3],[3, 1, 1, 2, 3, 1, 1, 3],[4, 2, 3, 2, 3, 1, 4, 4],[2, 1, 4, 1, 1, 0, 3, 4],[4, 1, 1, 1, 1, 2, 2, 4],[3, 4, 4, 1, 1, 3, 2, 1],[1, 2, 3, 3, 2, 2, 1, 1],[2, 2, 3, 3, 3, 4, 3, 0],[2, 4, 2, 4, 3, 2, 1, 2],[1, 1, 3, 3, 0, 1, 4, 2],[4, 3, 4, 3, 3, 4, 3, 1],[3, 3, 4, 3, 1, 1, 2, 2],[2, 1, 1, 3, 4, 3, 0, 0],[1, 1, 3, 3, 1, 1, 1, 4],[2, 4, 3, 3, 0, 2, 1, 4],[3, 4, 4, 3, 3, 0, 3, 2],[2, 1, 3, 3, 3, 4, 0, 4],[4, 2, 4, 1, 4, 4, 2, 0],[4, 3, 4, 1, 2, 2, 2, 3],[1, 1, 3, 2, 3, 1, 3, 2],[1, 4, 1, 1, 0, 4, 4, 2],[4, 2, 2, 3, 0, 2, 4, 0]]
-
 class MaskcatSolution (Solution):
     def __init__(self, number_of_variables: int, number_of_objectives: int, number_of_constraints: int = 0):
         super(MaskcatSolution, self).__init__(number_of_variables, number_of_objectives, number_of_constraints)
-        # self.number_of_variables = number_of_variables
-        # self.number_of_objectives = number_of_objectives
-        # self.number_of_constraints = number_of_constraints
-        # self.variables = [[] for _ in range(self.number_of_variables)]
-        # self.objectives = [0.0 for _ in range(self.number_of_objectives)]
-        # self.constraints = [0.0 for _ in range(self.number_of_constraints)]
-        # self.attributes = {}
 
     def get_number_of_masks(self):
-        # try:
-        #     return self.variables.index(0)
-        # except:
         return self.number_of_variables
 
     def __copy__(self):
@@ -66,10 +54,10 @@ class MaskcatSolution (Solution):
         return 'Solution(variables={},score={},constraints={})'.format(self.variables, self.objectives,
                                                                             self.constraints)
     
-    def getScore(self):
+    def get_score(self):
         return self.objectives[0]
 
-    def getMask(self):
+    def get_mask(self):
         return self.variables
 
 class MaskcatProblem (Problem):
@@ -77,12 +65,14 @@ class MaskcatProblem (Problem):
     MINIMIZE = -1
     MAXIMIZE = 1
 
-    def __init__ (self, cache, wordlist_route:str, generation_size:int, pass_len = 7, predefined_masks = 2):
+    def __init__ (self, cache, wordlist_route:str, generation_size:int,  OS:str, pass_len = 7, predefined_masks = 2):
         super(MaskcatProblem, self).__init__()
         
         self.masks = []
         self.cache = cache
-        self.masksHistory = []
+        self.masks_history = []
+        self.executioner = HashcatExecution(OS)
+
 
         self.number_of_variables= pass_len
         self.number_of_objectives= 1
@@ -96,89 +86,63 @@ class MaskcatProblem (Problem):
         self.generation_counter = 0
         self.generation_size = generation_size
 
-        self.experiment_counter = 0
-
         self.directions = [self.MAXIMIZE]
         self.labels = ['Maskcat']
 
-    #-------------- MASKS FUNCTIONS ----------------------
-    def maskToSolution(self, mask:str):
+    def mask_to_solution(self, mask:str):
         mask = mask.replace('?','')
-        maskLen = len(mask)
+        mask_len = len(mask)
 
         solution = []
-        if maskLen >= self.number_of_variables+1:
-            for i in range (maskLen-1):
-                solution.append(maskChromosomes.index(mask[i]))
-            solution.append(maskChromosomes.index('\0'))
-        elif maskLen == self.number_of_variables:
-            for i in range (maskLen):
-                solution.append(maskChromosomes.index(mask[i]))
-            solution.append(maskChromosomes.index('\0'))
+        if mask_len >= self.number_of_variables+1:
+            for i in range (mask_len-1):
+                solution.append(MASK_GENS.index(mask[i]))
+            solution.append(MASK_GENS.index('\0'))
+        elif mask_len == self.number_of_variables:
+            for i in range (mask_len):
+                solution.append(MASK_GENS.index(mask[i]))
+            solution.append(MASK_GENS.index('\0'))
         else:
             for i in range (0,self.number_of_variables+1):
-                if i < maskLen:
-                    solution.append(maskChromosomes.index(mask[i]))
+                if i < mask_len:
+                    solution.append(MASK_GENS.index(mask[i]))
                 else:
-                    solution.append(maskChromosomes.index('\0'))
+                    solution.append(MASK_GENS.index('\0'))
 
         return solution
 
-    def solutionToMask(self, solution: MaskcatSolution):
+    def solution_to_mask(self, solution: MaskcatSolution):
         mask = ''
         for chromosome in solution:
             if chromosome != 0:
-                mask = mask + chromosomesMask[chromosome]
+                mask = mask + GENS_MASK[chromosome]
             else:
                 return mask
         return mask
     
-    def randomMask (self):
-        randMask = []
+    def random_mask (self):
+        rand_mask = []
         for i in range (0,self.number_of_variables+1):
             if i < 4:
                 chromosome = random.randint(1, 4)
             else:
                 chromosome = random.randint(0, 4)
-            randMask.append(chromosome)
+            rand_mask.append(chromosome)
 
-        # i = 0 
-        # while i != 1:
-        #     if randMask[i] == 0:
-        #         print(randMask)
-        #         randMask[i] = random.randint(0, 4)
-        #         i = i-1
-        #     i = i+1
-
-        # if 0 not in randMask:
-        #     randMask[7]=0
-        return randMask
-        # return masks_sets[random.randint(0,4)]
-    
-    #-------------------------------
+        return rand_mask
 
     def create_solution(self) -> MaskcatSolution:
-        """ Creates a random_search solution to the problem.
-
-        :return: Solution. """
-
-        #Mascara alatoria a partir del charset de arriba
         new_solution = MaskcatSolution(self.number_of_variables, self.number_of_objectives)
 
         if self.number_of_predefined_masks_inserted != self.number_of_predefined_masks:
-            # predefined_mask = mask_sets[random.randint(0, len(mask_sets))]
-            # while len(predefined_mask) != self.number_of_variables+1 and not(len(predefined_mask)>self.number_of_variables):
-            #     predefined_mask.append(0)
-
-            predefined_mask = masks_experiment[self.experiment_counter]
-            self.experiment_counter += 1
+            predefined_mask = copy.copy(MASK_SETS[random.randint(0, len(MASK_SETS))])
+            while len(predefined_mask) != self.number_of_variables+1 and not(len(predefined_mask)>self.number_of_variables):
+                predefined_mask.append(0)
 
             new_solution.variables = predefined_mask
             self.number_of_predefined_masks_inserted = self.number_of_predefined_masks_inserted + 1
         else:
-            new_solution.variables = self.randomMask()
-        # new_solution.variables = self.maskToSolution() #Metodo transformar de mascara a array ints -> devuelve lista
-        # #'?d?d?d?d?d?d' 
+            new_solution.variables = self.random_mask()
 
         return new_solution
 
@@ -187,22 +151,20 @@ class MaskcatProblem (Problem):
 
         self.generation_counter = self.generation_counter + 1
 
-        mask = self.solutionToMask(solution.variables)
+        mask = self.solution_to_mask(solution.variables)
 
         if len(mask)>=8: # 4 ?x o más
             if mask  not in self.cache:
-                print("Evaluating: {}".format(mask))
-                execution = execHashcat(self.wordlist, mask)
+                execution = self.executioner.run(self.wordlist, mask)
                 score = execution[0]
                 time = execution[1]
                 self.cache[mask]={"Score":score,"Time":time} 
             else:
-                print("Mask in cache")
                 score = self.cache.get(mask)["Score"]
         else:
             score = -0.0
 
-        self.masksHistory.append([solution.variables, mask, score, self.generation])
+        self.masks_history.append([solution.variables, mask, score, self.generation])
         solution.objectives[0] =score
 
         if self.generation_counter == self.generation_size:
@@ -210,13 +172,14 @@ class MaskcatProblem (Problem):
             self.generation_counter = 0
 
         return solution
+
     def get_name(self) -> str:
         return 'Maskcat'
 
     def get_cache(self):
         return self.cache
 
-    def get_masksHistory(self):
-        return self.masksHistory
+    def get_masks_history(self):
+        return self.masks_history
 
 

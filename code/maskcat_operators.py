@@ -29,17 +29,17 @@ class MaskcatSPXCrossover(operators.Crossover[MaskcatSolution, MaskcatSolution])
 
             crossover_point = random.randint(1, len_of_masks)
 
-            maskCopy1 = copy.copy(parents[0].variables)
-            maskCopy2 = copy.copy(parents[1].variables)
+            mask_copy_1 = copy.copy(parents[0].variables)
+            mask_copy_2 = copy.copy(parents[1].variables)
 
             for i in range(0, crossover_point):
-                swap = maskCopy1[i]
-                maskCopy1[i] = maskCopy2[i]
-                maskCopy2[i] = swap
+                swap = mask_copy_1[i]
+                mask_copy_1[i] = mask_copy_2[i]
+                mask_copy_2[i] = swap
 
 
-            offspring[0].variables = maskCopy1
-            offspring[1].variables = maskCopy2
+            offspring[0].variables = mask_copy_1
+            offspring[1].variables = mask_copy_2
         
             fd.write("Padres: {} - {}   Punto cruce: {}     Hijos: {} - {}\n".format(parents[0].variables, parents[1].variables, crossover_point, offspring[0].variables, offspring[1].variables))
         
@@ -67,7 +67,7 @@ class MaskcatUniformMutation(operators.Mutation[MaskcatSolution]):
 
         if rand <= self.probability:
             fd = open("../measurements/observaciones_mutacion.txt", "a")
-            preMut = copy.copy(solution.variables)
+            pre_mut = copy.copy(solution.variables)
             gen = random.randint(0, len(solution.variables)-1)
 
             tmp = (random.randint(0, 4))
@@ -75,7 +75,7 @@ class MaskcatUniformMutation(operators.Mutation[MaskcatSolution]):
                 tmp = (random.randint(0, 4))
             solution.variables[gen] = tmp
 
-            fd.write("Original: {}  Posicion: {}    Cambio: {}  Mutacion: {}\n".format(preMut, gen, tmp, solution.variables))
+            fd.write("Original: {}  Posicion: {}    Cambio: {}  Mutacion: {}\n".format(pre_mut, gen, tmp, solution.variables))
             fd.close()
 
         return solution

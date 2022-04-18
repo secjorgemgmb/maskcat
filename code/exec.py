@@ -4,48 +4,47 @@ import json
 from data import HascatJSON
 import datetime
 
+class HashcatExecution ():
 
-def stringToTimestamp (day:str, hour:str):
+    def __init__(self, OS:str):
+        self.OS = OS
+
+    def string_to_timestamp (self, day:str, hour:str):
     
-    ISOFormatString = day+" "+hour
-    date = datetime.datetime.fromisoformat(ISOFormatString)
-    return date.timestamp()
+        ISO_format_string = day+" "+hour
+        date = datetime.datetime.fromisoformat(ISO_format_string)
+        return date.timestamp()
 
-def execHashcat (wordlist_route, mask):
-    dayStart = datetime.date.today()
+    def run (self, wordlist_route, mask):
+        day_start = datetime.date.today()
 
-    #-------------------- COMANDO EJECUCIÓN MAC --------------------------------------
-    #hashcat -m 0 -a 3 --runtime=60 --status-json --session=[mascara para identificar] wordlists/wordlist1MD5.txt [mascara]
-  
-    # result = subprocess.run([r"./hashcat", "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "--session={:s}".format(mask), 
-    # wordlist_route, "-O", "--potfile-disable", "--logfile-disable", mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
-    
-    
-    #-------------------- COMANDO EJECUCIÓN WINDOWS WSL -----------------------------------
-    #.\Desktop\hashcat-6.2.4\hashcat.exe -m 0 -a 3 --runtime=60 --status-json "C:\Users\Jorge\OneDrive - Universidad Rey Juan Carlos\TFG\maskcat\wordlists\wordlist1MD5.txt" ?d?d?d?d
-    result = subprocess.run([r"./hashcat.exe",  "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "-d", "1", "-O", "--potfile-disable", "--logfile-disable",
-     "--session={:s}".format(mask.replace("?", "_")), wordlist_route,  mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
+        if self.OS == "UNIX":
+            result = subprocess.run([r"hashcat", "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "--session={:s}".format(mask), 
+            wordlist_route, "-O", "--potfile-disable", "--logfile-disable", mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
+        
+        elif self.OS == "WINDOWS":
+            result = subprocess.run([r"./hashcat.exe",  "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "-d", "1", "-O", "--potfile-disable", "--logfile-disable",
+            "--session={:s}".format(mask.replace("?", "_")), wordlist_route,  mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
 
-    # RegEX para encontrar el JSON dentro de la salida obtenida de HASHACAT == grep "{.*}"
-    dayStop = datetime.date.today()
+        else:
+            raise NameError("Operating system not defined or invalid value")
 
-    reg1 = regex.compile("{.*}")
-    reg2 = regex.compile("Started: .*")
-    reg3 = regex.compile("Stopped: .*")
-    regHora = regex.compile("\d\d:\d\d:\d\d")
+        day_stop = datetime.date.today()
 
-    filteredResult = reg1.search(result)
-    resultJSON = json.loads(filteredResult[0])
-    startDateString = str(reg2.search(result)[0])
-    timestampStart = stringToTimestamp(str(dayStart), str(regHora.search(startDateString)[0]))
-    stopDateString = str(reg3.search(result)[0])
-    timestampStop = stringToTimestamp(str(dayStop), str(regHora.search(stopDateString)[0]))
+        reg1 = regex.compile("{.*}")
+        reg2 = regex.compile("Started: .*")
+        reg3 = regex.compile("Stopped: .*")
+        reg_hora = regex.compile("\d\d:\d\d:\d\d")
 
-    recoveredHashes = resultJSON["recovered_hashes"][0]
+        filtered_result = reg1.search(result)
+        resultJSON = json.loads(filtered_result[0])
+        start_date_string = str(reg2.search(result)[0])
+        timestamp_start = self.string_to_timestamp(str(day_start), str(reg_hora.search(start_date_string)[0]))
+        stop_date_string = str(reg3.search(result)[0])
+        timestamp_stop = self.string_to_timestamp(str(day_stop), str(reg_hora.search(stop_date_string)[0]))
 
-    #print(str(recoveredHashes+ " - ") + str(timestampStart) + " - " + str(timestampEnd))
-    #return [recoveredHashes, timestampStart, timestampEnd]
-    # ó 
-    return [-(recoveredHashes / (timestampStop - timestampStart)), (timestampStop - timestampStart)]
+        recovered_hashes = resultJSON["recovered_hashes"][0]
+
+        return [-(recovered_hashes / (timestamp_stop - timestamp_start)), (timestamp_stop - timestamp_start)]
 
     

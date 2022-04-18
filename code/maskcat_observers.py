@@ -10,13 +10,13 @@ LOGGER = logging.getLogger('jmetal')
 
 class MaskcatObserver(Observer):
 
-    def __init__(self, directory:str, fileName:str, frequency: float = 1.0) -> None:
+    def __init__(self, directory:str, file_name:str, frequency: float = 1.0) -> None:
         """ Show the number of evaluations, best fitness and computing time.
 
         :param frequency: Display frequency. """
         self.display_frequency = frequency
         self.directory = directory
-        self.file = fileName
+        self.file = file_name
 
         if not Path(self.directory).is_dir():
             LOGGER.warning('Directory {} does not exist. Creating it.'.format(self.directory))
@@ -36,11 +36,11 @@ class MaskcatObserver(Observer):
         if (evaluations % self.display_frequency) == 0 and solutions:
 
             fitness = -solutions.objectives[0]
-            solutionArray = solutions.variables
+            solution_array = solutions.variables
 
             fd.write(
                 '{};{};{}\n'.format(
-                    evaluations, fitness, solutionArray
+                    evaluations, fitness, solution_array
                 )
             )
         fd.close()

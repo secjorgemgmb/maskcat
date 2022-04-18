@@ -62,7 +62,6 @@ class GeneticAlgorithm_Reset (GeneticAlgorithm):
                     if len(offspring_population) >= self.offspring_population_size:
                         break
         else:
-            print("Poblacion reseteada")
             self.solutions.sort(key=lambda s: s.objectives[0])
             offspring_population = self.create_initial_solutions()
             offspring_population = offspring_population[:-1]

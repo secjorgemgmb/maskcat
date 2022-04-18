@@ -5,3 +5,6 @@ jmetal/*
 *.outfile
 *.pyc
 hashcat/*
+.DS_Store
+
+code/old_maskcat.py

@@ -17,17 +17,18 @@ from maskcat_observers import MaskcatObserver
 
 import pandas as pd
 
+import maskcat_config
 from maskcat_genetics import GeneticAlgorithm_Reset
 
 
 LOGGER = logging.getLogger('jmetal')
 
 class Maskcat ():
-    def __init__(self, reset:bool = False) -> None:
+    def __init__(self) -> None:
         self.historico = {}
         self.scores = []
         self.cache = {}
-        self.reset = reset
+        self.reset = maskcat_config.POPULATION_RESET
 
     def create_folders (self, directory:str):
         if not Path(directory).is_dir():
@@ -47,42 +48,42 @@ class Maskcat ():
             Path(times_directory).mkdir(parents=True)
         return [results_directory, generations_directory]
 
-    def run(self, OS:str, main_directory:str, wordlist_route:str, repetitions:int, population_size:int, offspring_population_size:int, max_evaluations:int, mask_len:int, predefined_masks:int, generations_reset_number:int=0):
+    def run(self):
         tag = ""
-        directories = self.create_folders(main_directory)
+        directories = self.create_folders(maskcat_config.DIRECTORY)
 
         data_frame_iteraciones = pd.DataFrame(columns=["Iteracion", "Puntuacion", "Array"])
-        for i in range (0, repetitions):
-            if repetitions > 1:
+        for i in range (0, maskcat_config.REPETITIONS):
+            if maskcat_config.REPETITIONS > 1:
                 tag = "_rep{}".format(i)
 
-            problem = MaskcatProblem(self.cache, wordlist_route, OS=OS, pass_len=mask_len, predefined_masks=predefined_masks, generation_size=population_size)
+            problem = MaskcatProblem(self.cache)
 
             if self.reset:
-                if generations_reset_number > 0:
+                if maskcat_config.POPULATION_RESET_NUMBER > 0:
                     algorithm = GeneticAlgorithm_Reset(problem=problem,
-                                            population_size=population_size, 
-                                            offspring_population_size=offspring_population_size,
-                                            generation_reset_number= generations_reset_number, 
+                                            population_size=maskcat_config.POPULATION_SIZE, 
+                                            offspring_population_size=maskcat_config.OFFSPRING_POPULATION,
+                                            generation_reset_number= maskcat_config.POPULATION_RESET_NUMBER, 
                                             mutation=MaskcatUniformMutation(0.1) , 
                                             selection= jmetal.operator.selection.BinaryTournamentSelection(), 
                                             crossover=MaskcatSPXCrossover(0.7),
-                                            termination_criterion=StoppingByEvaluations(max_evaluations))
+                                            termination_criterion=StoppingByEvaluations(maskcat_config.MAX_EVALUATIONS))
                 else:
                     raise ValueError("Number of generations to reset population not valid it has to be over 0")
             else:
                 algorithm = GeneticAlgorithm(problem=problem,
-                                            population_size=population_size, 
-                                            offspring_population_size=offspring_population_size,
+                                            population_size=maskcat_config.POPULATION_SIZE, 
+                                            offspring_population_size=maskcat_config.OFFSPRING_POPULATION,
                                             mutation=MaskcatUniformMutation(0.1) , 
                                             selection= jmetal.operator.selection.BinaryTournamentSelection(), 
                                             crossover=MaskcatSPXCrossover(0.7),
-                                            termination_criterion=StoppingByEvaluations(max_evaluations))
+                                            termination_criterion=StoppingByEvaluations(maskcat_config.MAX_EVALUATIONS))
 
             basic = observers.BasicObserver(frequency=1.0)
             algorithm.observable.register(observer=basic)
 
-            progress_bar = observers.ProgressBarObserver(max=max_evaluations)
+            progress_bar = observers.ProgressBarObserver(max=maskcat_config.MAX_EVALUATIONS)
             algorithm.observable.register(progress_bar)
 
 
@@ -110,7 +111,7 @@ class Maskcat ():
         json.dump(self.cache, file_2)
         file_2.close()
 
-        if repetitions > 1:
+        if maskcat_config.REPETITIONS > 1:
 
             data_frame_iteraciones.to_csv("{}/estadisticas_historico.csv".format(directories[0]), index=False, sep=";")
 

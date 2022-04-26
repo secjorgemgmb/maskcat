@@ -1,3 +1,0 @@
-Experimento : 30 iteraciones - 0 máscaras predefinidas - longitud 8
-Inicio: 2022-04-02 16:14:37.564975
-Fin: 2022-04-03 05:20:28.595473

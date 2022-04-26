@@ -1,11 +1,13 @@
 import random
 import copy
 
+
 from jmetal.core.problem import Problem
 from jmetal.core.solution import Solution
 
 
 from exec import HashcatExecution
+import maskcat_config
 
 
 #   l | abcdefghijklmnopqrstuvwxyz [a-z]
@@ -65,26 +67,25 @@ class MaskcatProblem (Problem):
     MINIMIZE = -1
     MAXIMIZE = 1
 
-    def __init__ (self, cache, wordlist_route:str, generation_size:int,  OS:str, pass_len = 7, predefined_masks = 2):
+    def __init__ (self, cache):
         super(MaskcatProblem, self).__init__()
         
         self.masks = []
         self.cache = cache
         self.masks_history = []
-        self.executioner = HashcatExecution(OS)
+        self.executioner = HashcatExecution()
 
 
-        self.number_of_variables= pass_len
+        self.number_of_variables= maskcat_config.MASK_LEN
         self.number_of_objectives= 1
         self.number_of_constraints= 0
 
-        self.number_of_predefined_masks = predefined_masks
+        self.number_of_predefined_masks = maskcat_config.PREDEFINED_MASKS
         self.number_of_predefined_masks_inserted = 0
 
-        self.wordlist = wordlist_route
         self.generation = 1
         self.generation_counter = 0
-        self.generation_size = generation_size
+        self.generation_size = maskcat_config.POPULATION_SIZE
 
         self.directions = [self.MAXIMIZE]
         self.labels = ['Maskcat']
@@ -155,7 +156,7 @@ class MaskcatProblem (Problem):
 
         if len(mask)>=8: # 4 ?x o más
             if mask  not in self.cache:
-                execution = self.executioner.run(self.wordlist, mask)
+                execution = self.executioner.run(mask)
                 score = execution[0]
                 time = execution[1]
                 self.cache[mask]={"Score":score,"Time":time} 

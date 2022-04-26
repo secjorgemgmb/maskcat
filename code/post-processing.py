@@ -55,9 +55,9 @@ def get_arrays_generations(csvFile:str, outputFileCSV:str, outputFileJSON:str):
 #     count_generations_repetitions(csvFile, outputFile1)
 #     get_arrays_generations(csvFile, outputFile2, outputFile3)
 
-csv_file = "../results/2022-04-15/maskcatHistory_maskcat_100_2_2022-04-15.csv"
-output_file1 = "../measurements/poblacion_100/repeticiones_maskcat_100_2.json"
-output_file2 = "../measurements/poblacion_100/generationByRow_maskcat_100_2.csv"
-output_file3 = "../measurements/poblacion_100/generationByRow_maskcat_100_2.json"
+csv_file = "../experiments/maskcat_population100_2022-04-26/results/maskcatHistory.csv"
+output_file1 = "../experiments/maskcat_population100_2022-04-26/post-processed/repeticiones.json"
+output_file2 = "../experiments/maskcat_population100_2022-04-26/post-processed/generationByRow.csv"
+output_file3 = "../experiments/maskcat_population100_2022-04-26/post-processed/generationByRow.json"
 count_generations_repetitions(csv_file, output_file1)
 get_arrays_generations(csv_file, output_file2, output_file3)

@@ -1,31 +1,15 @@
 import datetime
 from maskcat import Maskcat
 
-date = datetime.date.today()
+import maskcat_config
 
-directory = "../maskcat_{}".format(date)
-wordlist_route = "../wordlists/shuffled_top_1M_MD5.txt"
-repetitions=1
-population_size=6
-offspring_population_size = 6
-max_evaluations=100
-mask_len=7
-predefined_masks=0
 
 inicio = datetime.datetime.now()
-Maskcat(False).run(OS="UNIX",
-    main_directory=directory,
-    wordlist_route=wordlist_route,
-    repetitions=repetitions,
-    population_size=population_size,
-    offspring_population_size=offspring_population_size,
-    max_evaluations=max_evaluations,
-    mask_len=mask_len,
-    predefined_masks=predefined_masks)
+Maskcat().run()
 fin = datetime.datetime.now()
 
-fd = open ("{}/times/times.txt".format(directory), "w")
-fd.write('''Experimento : maskcat
+fd = open ("{}/times/times.txt".format(maskcat_config.DIRECTORY), "w")
+fd.write('''Experimento : maskcat normal poblacion tamaño 100 y 100 generaciones
 Inicio: {}
 Fin: {}'''.format(inicio, fin))
 fd.close()

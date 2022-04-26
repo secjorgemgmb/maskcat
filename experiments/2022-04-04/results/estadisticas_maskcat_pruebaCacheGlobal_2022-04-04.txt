@@ -1,0 +1,6 @@
+Media = 0.0
+Max = -0.0
+Min = -0.0
+Desviacion estandar = 0.0
+Moda = -0.0
+Mediana = 0.0

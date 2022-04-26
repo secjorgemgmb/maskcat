@@ -1,0 +1,3 @@
+Experimento : prueba genetico reseteo poblacion cada 10 generaciones
+Inicio: 2022-04-11 18:17:20.577064
+Fin: 2022-04-11 20:39:34.575280

@@ -2,11 +2,14 @@ import datetime
 
 
 #========== Directories to open or write files ==========
+# Generar ficheros para analizar la ejecución
 OUTPUT_FILES = False
 DIRECTORY_OUTPUT_FILES = ".\experiments\maskcat_no-output_{}".format(datetime.date.today())
+
 WORDLIST_ROUTE = "C:\\Users\\Jorge\\Desktop\\TFG\\maskcat\\DOWNLOAD\\wordlists\\shuffled_top_1M_MD5.txt"
 
 #========== Maskcat problem execution variables ==========
+#MASK_LEN = Longitud de la máscara - 1
 MASK_LEN=7
 PREDEFINED_MASKS=0
 

@@ -14,5 +14,5 @@ if maskcat_config.OUTPUT_FILES:
     Inicio: {}
     Fin: {}'''.format(inicio, fin))
     fd.close()
-else:
-    print("Hora de inicio= {}\nHora de fin= {}\n".format(inicio, fin))
+
+print("Hora de inicio= {}\nHora de fin= {}\n".format(inicio, fin))

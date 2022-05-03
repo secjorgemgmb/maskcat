@@ -1,0 +1,1 @@
+python3 "C:\Users\Jorge\OneDrive - Universidad Rey Juan Carlos\TFG\maskcat\code\main.py"

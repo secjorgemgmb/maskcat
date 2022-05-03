@@ -8,3 +8,4 @@ hashcat/*
 .DS_Store
 create_folders.sh
 code/old_maskcat.py
+rockyouMD5.txt

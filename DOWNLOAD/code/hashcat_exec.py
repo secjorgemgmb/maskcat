@@ -21,17 +21,23 @@ class HashcatExecution ():
     def run (self, mask):
         day_start = datetime.date.today()
 
+        if maskcat_config.HASHCAT_COMMAND != "NONE":
+            hashcat_command = maskcat_config.HASHCAT_COMMAND.split()
+            hashcat_command.append(mask)
+            print(hashcat_command)
+            result = subprocess.run(hashcat_command, stdout=subprocess.PIPE).stdout.decode("utf-8")
+
         if self.OS == "Darwin":
-            result = subprocess.run([r"hashcat", "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "--session={:s}".format(mask), 
+            result = subprocess.run([r"hashcat", "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", 
             self.wordlist, "-O", "--potfile-disable", "--logfile-disable", mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
 
         elif self.OS == "Linux":
             result = subprocess.run([r"hashcat",  "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "-O", "--potfile-disable", "--logfile-disable",
-            "--session={:s}".format(mask.replace("?", "_")), self.wordlist,  mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
+             self.wordlist,  mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
         
         elif self.OS == "Windows":
             result = subprocess.run([r"hashcat.cmd",  "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "-d", "1", "-O", "--potfile-disable", "--logfile-disable",
-            "--session={:s}".format(mask.replace("?", "_")), self.wordlist,  mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
+            self.wordlist,  mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
 
         else:
             raise Exception("Operating system not defined or invalid value")

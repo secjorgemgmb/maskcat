@@ -1,6 +1,7 @@
 Requisitos:
 
   -Hashcat instalado
+  
   -Python 3
 
 Instalación del proyecto:
@@ -11,6 +12,9 @@ Instalación del proyecto:
 Ejecución del proyecto:
 
   1. Configuración de los parámetros de ejecución en el fichero "maskcat_config.py"
+
     - La ruta del wordlist se recomienda que sea una ruta absoluta para que hashcat encuentre el fichero correctamente.
+    
     - MASK_LEN debe tener el valor de la longitud deseada restandole 1.
+    
   2. Ejecución del fichero main.py

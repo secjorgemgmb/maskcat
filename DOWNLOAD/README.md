@@ -17,4 +17,6 @@ Ejecución del proyecto:
     
     - MASK_LEN debe tener el valor de la longitud deseada restandole 1.
     
+    - HASHCAT_COMMAND se puede dejar en "NONE" para que detecte SO o se puede introducir el comando de hashcat que se quiere utilizar, definiendo la ruta en la variable WORDLIST_ROUTE y no introduciendo máscaras ya que se hace en hashcat_exec.py. Siempre se debe tener "--potfile-disable" para que los resultados sean correctos.
+    
   2. Ejecución del fichero main.py

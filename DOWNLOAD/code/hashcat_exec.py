@@ -3,6 +3,7 @@ import regex
 import json
 import datetime
 import platform
+import copy
 
 import maskcat_config
 
@@ -11,6 +12,7 @@ class HashcatExecution ():
     def __init__(self):
         self.OS = platform.system()
         self.wordlist = maskcat_config.WORDLIST_ROUTE
+        self.hashcat_command = maskcat_config.HASHCAT_COMMAND.split()
 
     def string_to_timestamp (self, day:str, hour:str):
     
@@ -21,11 +23,8 @@ class HashcatExecution ():
     def run (self, mask):
         day_start = datetime.date.today()
 
-        if maskcat_config.HASHCAT_COMMAND != "NONE":
-            hashcat_command = maskcat_config.HASHCAT_COMMAND.split()
-            hashcat_command.append(mask)
-            print(hashcat_command)
-            result = subprocess.run(hashcat_command, stdout=subprocess.PIPE).stdout.decode("utf-8")
+        if not ("NONE" in self.hashcat_command):
+            result = subprocess.run(copy.copy(self.hashcat_command).append(mask), stdout=subprocess.PIPE).stdout.decode("utf-8")
 
         if self.OS == "Darwin":
             result = subprocess.run([r"hashcat", "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", 

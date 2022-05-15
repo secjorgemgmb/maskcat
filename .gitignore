@@ -9,3 +9,4 @@ hashcat/*
 create_folders.sh
 code/old_maskcat.py
 rockyouMD5.txt
+jmetalpy.log

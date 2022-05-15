@@ -1,0 +1,3 @@
+Experimento : prueba rendimiento maskcat poblacion 100, 100 generacines 30 iteraciones
+    Inicio: 2022-05-14 22:16:15.543597
+    Fin: 2022-05-15 13:10:10.960966

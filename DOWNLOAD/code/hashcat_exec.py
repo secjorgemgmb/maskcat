@@ -31,7 +31,7 @@ class HashcatExecution ():
             self.wordlist, "-O", "--potfile-disable", "--logfile-disable", mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
 
         elif self.OS == "Linux":
-            result = subprocess.run([r"hashcat",  "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "-O", "--potfile-disable", "--logfile-disable",
+            result = subprocess.run([r"hashcat",  "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "-d", "1", "-O", "--potfile-disable", "--logfile-disable",
              self.wordlist,  mask], stdout=subprocess.PIPE).stdout.decode("utf-8")
         
         elif self.OS == "Windows":

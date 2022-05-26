@@ -10,7 +10,7 @@ fin = datetime.datetime.now()
 
 if maskcat_config.OUTPUT_FILES:
     fd = open ("{}/times/times.txt".format(maskcat_config.DIRECTORY_OUTPUT_FILES), "w")
-    fd.write('''Experimento : prueba rendimiento maskcat poblacion 500, 100 generacines algortimo generacional
+    fd.write('''Experimento : prueba rendimiento maskcat poblacion 50, 100 generacines algortimo generacional, bucle 10 iteraciones
     Inicio: {}
     Fin: {}\n'''.format(inicio, fin))
     fd.close()

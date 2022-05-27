@@ -98,6 +98,6 @@ class GeneticAlgorithm_Generational (GeneticAlgorithm):
         if population[0].objectives[0] < offspring_population[0].objectives[0]:
             offspring_population = offspring_population[:-1]
             offspring_population.append(population[0])
-
+            offspring_population.sort(key=lambda s: s.objectives[0])
 
         return offspring_population

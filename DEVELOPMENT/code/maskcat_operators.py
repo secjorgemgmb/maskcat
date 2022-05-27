@@ -19,7 +19,7 @@ class MaskcatSPXCrossover(operators.Crossover[MaskcatSolution, MaskcatSolution])
         Check.that(type(parents[1]) is MaskcatSolution, "Solution type invalid")
         Check.that(len(parents) == 2, 'The number of parents is not two: {}'.format(len(parents)))
 
-        fd = open("../measurements/observaciones_cruce.txt", "a")
+        # fd = open("../measurements/observaciones_cruce.txt", "a")
 
         offspring = [copy.deepcopy(parents[0]), copy.deepcopy(parents[1])]
         rand = random.random()
@@ -41,9 +41,9 @@ class MaskcatSPXCrossover(operators.Crossover[MaskcatSolution, MaskcatSolution])
             offspring[0].variables = mask_copy_1
             offspring[1].variables = mask_copy_2
         
-            fd.write("Padres: {} - {}   Punto cruce: {}     Hijos: {} - {}\n".format(parents[0].variables, parents[1].variables, crossover_point, offspring[0].variables, offspring[1].variables))
+            # fd.write("Padres: {} - {}   Punto cruce: {}     Hijos: {} - {}\n".format(parents[0].variables, parents[1].variables, crossover_point, offspring[0].variables, offspring[1].variables))
         
-        fd.close()
+        # fd.close()
         return offspring
         
     def get_number_of_parents(self) -> int:
@@ -66,8 +66,8 @@ class MaskcatUniformMutation(operators.Mutation[MaskcatSolution]):
         rand = random.random()
 
         if rand <= self.probability:
-            fd = open("../measurements/observaciones_mutacion.txt", "a")
-            pre_mut = copy.copy(solution.variables)
+            # fd = open("../measurements/observaciones_mutacion.txt", "a")
+            # pre_mut = copy.copy(solution.variables)
             gen = random.randint(0, len(solution.variables)-1)
 
             tmp = (random.randint(0, 4))
@@ -75,8 +75,8 @@ class MaskcatUniformMutation(operators.Mutation[MaskcatSolution]):
                 tmp = (random.randint(0, 4))
             solution.variables[gen] = tmp
 
-            fd.write("Original: {}  Posicion: {}    Cambio: {}  Mutacion: {}\n".format(pre_mut, gen, tmp, solution.variables))
-            fd.close()
+            # fd.write("Original: {}  Posicion: {}    Cambio: {}  Mutacion: {}\n".format(pre_mut, gen, tmp, solution.variables))
+            # fd.close()
 
         return solution
 

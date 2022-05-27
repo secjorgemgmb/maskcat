@@ -94,8 +94,8 @@ class Maskcat ():
             basic = observers.BasicObserver(frequency=1.0)
             algorithm.observable.register(observer=basic)
 
-            progress_bar = observers.ProgressBarObserver(max=maskcat_config.MAX_EVALUATIONS)
-            algorithm.observable.register(progress_bar)
+            # progress_bar = observers.ProgressBarObserver(max=maskcat_config.MAX_EVALUATIONS)
+            # algorithm.observable.register(progress_bar)
 
             if self.output_files:
                 maskcat_observer = MaskcatObserver(directories[1], "maskcat_generaciones{}.csv".format(tag), 1.0)

@@ -95,9 +95,16 @@ class GeneticAlgorithm_Generational (GeneticAlgorithm):
         population.sort(key=lambda s: s.objectives[0])
         offspring_population.sort(key=lambda s: s.objectives[0])
 
+        print("popu {} \noffsp{}".format(population[0], offspring_population[0]))
+
         if population[0].objectives[0] < offspring_population[0].objectives[0]:
+            print("---------- HEY ------------------")
+            print(population[0])
+            print(offspring_population[0])
             offspring_population = offspring_population[:-1]
             offspring_population.append(population[0])
+            offspring_population.sort(key=lambda s: s.objectives[0])
+            print(offspring_population[0])
 
 
         return offspring_population

@@ -9,10 +9,10 @@ Maskcat().run()
 fin = datetime.datetime.now()
 
 if maskcat_config.OUTPUT_FILES:
-    fd = open ("{}/times/times.txt".format(maskcat_config.DIRECTORY), "w")
-    fd.write('''Experimento : maskcat normal poblacion tamaño 100 y 100 generaciones
+    fd = open ("{}/times/times.txt".format(maskcat_config.DIRECTORY_OUTPUT_FILES), "w")
+    fd.write('''Experimento : prueba rendimiento maskcat poblacion 50, 100 generacines algortimo generacional, bucle 10 iteraciones
     Inicio: {}
-    Fin: {}'''.format(inicio, fin))
+    Fin: {}\n'''.format(inicio, fin))
     fd.close()
-else:
-    print("Hora de inicio= {}\nHora de fin= {}\n".format(inicio, fin))
+
+print("Hora de inicio= {}\nHora de fin= {}\n".format(inicio, fin))

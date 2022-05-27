@@ -1,12 +1,10 @@
 import random
 import copy
 
-
 from jmetal.core.problem import Problem
 from jmetal.core.solution import Solution
 
-
-from exec import HashcatExecution
+from hashcat_exec import HashcatExecution
 import maskcat_config
 
 

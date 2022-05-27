@@ -47,18 +47,25 @@ def get_arrays_generations(csvFile:str, outputFileCSV:str, outputFileJSON:str):
     json.dump(historicoJSON, fd2)
     fd2.close()
 
-# for i in range(0, 30):
+for i in range(0, 30):
 #     csvFile = "../results/2022-04-02/maskcatHistory_maskcat_2022-04-02_rep{}.csv".format(i)
 #     outputFile1 = "../measurements/2022-04-02/repeticiones/repeticiones_maskcat_2022-04-02_rep{}.json".format(i)
 #     outputFile2 = "../measurements/2022-04-02/generaciones_por_fila/generationByRow_maskcat_2022-04-02_rep{}.csv".format(i)
 #     outputFile3 = "../measurements/2022-04-02/generaciones_por_fila/generationByRow_maskcat_2022-04-02_rep{}.json".format(i)
 #     count_generations_repetitions(csvFile, outputFile1)
 #     get_arrays_generations(csvFile, outputFile2, outputFile3)
+    dir = "../experiments/maskcat_loop50/"
+    csv_file = dir +"results/maskcatHistory_rep{}.csv".format(i)
+    output_file1 = dir + "post-processed/repeticiones_rep{}.json".format(i)
+    output_file2 = dir + "post-processed/generationByRow_rep{}.csv".format(i)
+    output_file3 = dir + "post-processed/generationByRow_rep{}.json".format(i)
+    count_generations_repetitions(csv_file, output_file1)
+    get_arrays_generations(csv_file, output_file2, output_file3)
 
-dir = "../experiments/maskcat_generational_2022-05-01/"
-csv_file = dir +"results/maskcatHistory.csv"
-output_file1 = dir + "post-processed/repeticiones.json"
-output_file2 = dir + "post-processed/generationByRow.csv"
-output_file3 = dir + "post-processed/generationByRow.json"
-count_generations_repetitions(csv_file, output_file1)
-get_arrays_generations(csv_file, output_file2, output_file3)
+# dir = "../experiments/maskcat_population1000/"
+# csv_file = dir +"results/maskcatHistory.csv"
+# output_file1 = dir + "post-processed/repeticiones.json"
+# output_file2 = dir + "post-processed/generationByRow.csv"
+# output_file3 = dir + "post-processed/generationByRow.json"
+# count_generations_repetitions(csv_file, output_file1)
+# get_arrays_generations(csv_file, output_file2, output_file3)

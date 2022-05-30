@@ -1,5 +1,6 @@
 import random
 import copy
+import time
 
 from jmetal.core.problem import Problem
 from jmetal.core.solution import Solution
@@ -123,10 +124,10 @@ class MaskcatProblem (Problem):
         rand_mask = []
         for i in range (0,self.number_of_variables+1):
             if i < 4:
-                chromosome = random.randint(1, 4)
+                gen = random.randint(1, 4)
             else:
-                chromosome = random.randint(0, 4)
-            rand_mask.append(chromosome)
+                gen = random.randint(0, 4)
+            rand_mask.append(gen)
 
         return rand_mask
 

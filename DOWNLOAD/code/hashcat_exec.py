@@ -57,6 +57,6 @@ class HashcatExecution ():
 
         recovered_hashes = resultJSON["recovered_hashes"][0]
 
-        return [-(recovered_hashes / (timestamp_stop - timestamp_start)), (timestamp_stop - timestamp_start)]
+        return [-(recovered_hashes / (timestamp_stop - timestamp_start)), recovered_hashes, (timestamp_stop - timestamp_start)]
 
     

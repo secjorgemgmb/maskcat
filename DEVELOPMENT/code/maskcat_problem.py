@@ -156,8 +156,9 @@ class MaskcatProblem (Problem):
             if mask  not in self.cache:
                 execution = self.executioner.run(mask)
                 score = execution[0]
-                time = execution[1]
-                self.cache[mask]={"Score":score,"Time":time} 
+                recovered_hashes = execution[1]
+                time = execution[2]
+                self.cache[mask]={"Score":score,"Recovered_hashes":recovered_hashes,"Time":time} 
             else:
                 score = self.cache.get(mask)["Score"]
         else:

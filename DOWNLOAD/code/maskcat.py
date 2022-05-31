@@ -120,7 +120,7 @@ class Maskcat ():
                 self.scores.append(solutions.get_score())
 
         if self.output_files:
-            file_2 = open("{}/maskcatResults{}.json".format(directories[0], tag), "w")
+            file_2 = open("{}/experiment_cache.json".format(directories[0], tag), "w")
             json.dump(self.cache, file_2)
             file_2.close()
 

@@ -6,7 +6,7 @@ import datetime
 # Generar ficheros para analizar la ejecución
 OUTPUT_FILES = True
 #DIRECTORY_OUTPUT_FILES = "./experiments/maskcat_prueba_{}".format(datetime.date.today())
-DIRECTORY_OUTPUT_FILES = "./experiments/maskcat_loop100-200"
+DIRECTORY_OUTPUT_FILES = "./experiments/maskcat_loop300-200_2"
 
 #Preferible ruta absoluta del fichero wordlist
 #WORDLIST_ROUTE = "C:\\Users\\Jorge\\Desktop\\TFG\\maskcat\\DOWNLOAD\\wordlists\\shuffled_top_1M_MD5.txt"
@@ -32,8 +32,8 @@ GENERATIONAL = False
 POPULATION_RESET = False
 POPULATION_RESET_NUMBER = 1
 
-POPULATION_SIZE=100
-OFFSPRING_POPULATION =100
-MAX_EVALUATIONS=20000
+POPULATION_SIZE=300
+OFFSPRING_POPULATION =300
+MAX_EVALUATIONS=60000
 REPETITIONS=10
 

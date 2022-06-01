@@ -26,7 +26,7 @@ class HashcatExecution ():
         if self.OS == "Darwin":
             return list(["hashcat", "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", maskcat_config.WORDLIST_ROUTE, "-O", "--potfile-disable", "--logfile-disable"])
         elif self.OS == "Linux":
-            return list(["hashcat",  "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "-d", "1", "-O", "--potfile-disable", "--logfile-disable",maskcat_config.WORDLIST_ROUTE])
+            return list(["hashcat",  "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "-O", "--potfile-disable", "--logfile-disable",maskcat_config.WORDLIST_ROUTE])
         
         elif self.OS == "Windows":
             return list(["hashcat.cmd",  "-m" ,"0", "-a", "3", "--runtime=600", "--status-json", "-d", "1", "-O", "--potfile-disable", "--logfile-disable",maskcat_config.WORDLIST_ROUTE])

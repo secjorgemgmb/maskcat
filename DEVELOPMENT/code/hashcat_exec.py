@@ -36,27 +36,37 @@ class HashcatExecution ():
 
 
     def run (self, mask):
-        day_start = datetime.date.today()
+        # day_start = datetime.date.today()
         cmd_line = self.hashcat_command.copy()
         cmd_line.append(mask)
-        result = subprocess.run(cmd_line, stdout=subprocess.PIPE).stdout.decode("utf-8")
 
-        day_stop = datetime.date.today()
+        timestamp_start = datetime.datetime.now()
+        # timestamp_start = datetime.datetime.timestamp(datetime.datetime.now())
+        result = subprocess.run(cmd_line, stdout=subprocess.PIPE).stdout.decode("utf-8")
+        timestamp_stop = datetime.datetime.now()
+        # timestamp_stop = datetime.datetime.timestamp(datetime.datetime.now())
+
+        print(timestamp_start)
+        print(timestamp_stop)
+
+        total_seconds = (timestamp_stop - timestamp_start).total_seconds()
+
+        # day_stop = datetime.date.today()
 
         reg1 = regex.compile("{.*}")
-        reg2 = regex.compile("Started: .*")
-        reg3 = regex.compile("Stopped: .*")
-        reg_hora = regex.compile("\d\d:\d\d:\d\d")
+        # reg2 = regex.compile("Started: .*")
+        # reg3 = regex.compile("Stopped: .*")
+        # reg_hora = regex.compile("\d\d:\d\d:\d\d")
 
         filtered_result = reg1.search(result)
         resultJSON = json.loads(filtered_result[0])
-        start_date_string = str(reg2.search(result)[0])
-        timestamp_start = self.string_to_timestamp(str(day_start), str(reg_hora.search(start_date_string)[0]))
-        stop_date_string = str(reg3.search(result)[0])
-        timestamp_stop = self.string_to_timestamp(str(day_stop), str(reg_hora.search(stop_date_string)[0]))
+        # start_date_string = str(reg2.search(result)[0])
+        # timestamp_start = self.string_to_timestamp(str(day_start), str(reg_hora.search(start_date_string)[0]))
+        # stop_date_string = str(reg3.search(result)[0])
+        # timestamp_stop = self.string_to_timestamp(str(day_stop), str(reg_hora.search(stop_date_string)[0]))
 
         recovered_hashes = resultJSON["recovered_hashes"][0]
 
-        return [-(recovered_hashes / (timestamp_stop - timestamp_start)), recovered_hashes, (timestamp_stop - timestamp_start)]
+        return [-(recovered_hashes / total_seconds), recovered_hashes, total_seconds]
 
     

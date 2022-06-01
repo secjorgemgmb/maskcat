@@ -1,3 +1,0 @@
-Experimento : comprobación cambio funcionamiento con fichero configuración funcione
-Inicio: 2022-04-26 00:57:50.940246
-Fin: 2022-04-26 01:25:25.154511

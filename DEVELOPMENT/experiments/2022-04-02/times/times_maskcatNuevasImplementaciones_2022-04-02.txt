@@ -1,3 +1,0 @@
-Experimento : replicacion repetición 0 del 31-03-2022 para comprobar cambios crossover 
-Inicio: 2022-04-02 14:07:18.878375
-Fin: 2022-04-02 14:40:04.942347

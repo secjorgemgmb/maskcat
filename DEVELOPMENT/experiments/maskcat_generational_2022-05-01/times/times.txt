@@ -1,3 +1,0 @@
-Experimento : maskcat normal poblacion tamaño 100 y 100 generaciones
-Inicio: 2022-05-01 22:19:29.738785
-Fin: 2022-05-01 23:45:46.920871

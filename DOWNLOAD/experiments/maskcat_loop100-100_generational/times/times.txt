@@ -1,0 +1,6 @@
+Experimento : maskcat (generational = True)
+    Poblacion = 100
+    Num generaciones = 100.0
+    Num iteraciones = 10
+    Inicio: 2022-05-31 19:09:53.668791
+    Fin: 2022-06-01 00:23:46.537474

@@ -6,7 +6,7 @@ import datetime
 # Generar ficheros para analizar la ejecución
 OUTPUT_FILES = True
 #DIRECTORY_OUTPUT_FILES = "./experiments/maskcat_prueba_{}".format(datetime.date.today())
-DIRECTORY_OUTPUT_FILES = "./experiments/maskcat_loop100-100_generational"
+DIRECTORY_OUTPUT_FILES = "./experiments/maskcat_loop300-200"
 
 #Preferible ruta absoluta del fichero wordlist
 #WORDLIST_ROUTE = "C:\\Users\\Jorge\\Desktop\\TFG\\maskcat\\DOWNLOAD\\wordlists\\shuffled_top_1M_MD5.txt"
@@ -27,13 +27,13 @@ MASK_LEN=7
 PREDEFINED_MASKS=0
 
 #========== Maskcat GeneticAlgorithm execution variables ==========
-GENERATIONAL = True
+GENERATIONAL = False
 
 POPULATION_RESET = False
 POPULATION_RESET_NUMBER = 1
 
-POPULATION_SIZE=100
-OFFSPRING_POPULATION =100
-MAX_EVALUATIONS=10000
+POPULATION_SIZE=300
+OFFSPRING_POPULATION =300
+MAX_EVALUATIONS=60000
 REPETITIONS=10
 

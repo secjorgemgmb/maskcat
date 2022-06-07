@@ -3,18 +3,13 @@ import os
 
 def cypherMD5(file):
     fd = open(file, "r", errors='ignore')
-    fd2 = open('shuffled_top_1M_MD5.txt', 'w')
-    do = True
+    fd2 = open('shuffled_hashes_MD5.txt', 'w')
 
-    while do:
-        readed = fd.readline()
-
-        if readed == '':
-            do = False
-        #print('\n')
-        hashed = hash.md5(readed.encode('utf-8').strip()).hexdigest()
+    for line in fd.readlines():
+        if len(line)<=8:
+            hashed = hash.md5(line.encode('utf-8').strip()).hexdigest()
         
-        fd2.write(hashed+'\n')
+            fd2.write(hashed+'\n')
 
     fd.close()
     fd2.close()

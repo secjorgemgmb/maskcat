@@ -11,7 +11,7 @@ DIRECTORY_OUTPUT_FILES = "./experiments/maskcat_loop200-100"
 #Preferible ruta absoluta del fichero wordlist
 #WORDLIST_ROUTE = "C:\\Users\\Jorge\\Desktop\\TFG\\maskcat\\DOWNLOAD\\wordlists\\shuffled_top_1M_MD5.txt"
 
-WORDLIST_ROUTE = "/home/alumno/maskcat/DOWNLOAD/wordlists/shuffled_top_1M_MD5.txt"
+WORDLIST_ROUTE = "/home/alumno/maskcat/DOWNLOAD/wordlists/experiments-file_MD5.txt"
 
 
 #========== Maskcat Command ==========

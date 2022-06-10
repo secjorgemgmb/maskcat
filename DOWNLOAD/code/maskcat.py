@@ -29,7 +29,6 @@ class Maskcat ():
         self.scores = []
         self.cache = {}
         self.output_files = maskcat_config.OUTPUT_FILES
-        self.reset = maskcat_config.POPULATION_RESET
         self.generational = maskcat_config.GENERATIONAL
 
     def create_folders (self, directory:str):
@@ -62,33 +61,21 @@ class Maskcat ():
 
             problem = MaskcatProblem(self.cache)
 
-            if self.reset:
-                if maskcat_config.POPULATION_RESET_NUMBER > 0:
-                    algorithm = GeneticAlgorithm_Reset(problem=problem,
-                                            population_size=maskcat_config.POPULATION_SIZE, 
-                                            offspring_population_size=maskcat_config.OFFSPRING_POPULATION,
-                                            generation_reset_number= maskcat_config.POPULATION_RESET_NUMBER, 
-                                            mutation=MaskcatUniformMutation(0.1) , 
-                                            selection= jmetal.operator.selection.BinaryTournamentSelection(), 
-                                            crossover=MaskcatSPXCrossover(0.7),
-                                            termination_criterion=StoppingByEvaluations(maskcat_config.MAX_EVALUATIONS))
-                else:
-                    raise ValueError("Number of generations to reset population not valid it has to be over 0")
-            elif self.generational:
+            if self.generational:
                 algorithm = GeneticAlgorithm_Generational(problem=problem,
                                             population_size=maskcat_config.POPULATION_SIZE, 
                                             offspring_population_size=maskcat_config.OFFSPRING_POPULATION,
-                                            mutation=MaskcatUniformMutation(0.1) , 
+                                            mutation=MaskcatUniformMutation(maskcat_config.MUTATION_PROB) , 
                                             selection= jmetal.operator.selection.BinaryTournamentSelection(), 
-                                            crossover=MaskcatSPXCrossover(0.7),
+                                            crossover=MaskcatSPXCrossover(maskcat_config.CROSSOVER_PROB),
                                             termination_criterion=StoppingByEvaluations(maskcat_config.MAX_EVALUATIONS))
             else:
                 algorithm = GeneticAlgorithm(problem=problem,
                                             population_size=maskcat_config.POPULATION_SIZE, 
                                             offspring_population_size=maskcat_config.OFFSPRING_POPULATION,
-                                            mutation=MaskcatUniformMutation(0.1) , 
+                                            mutation=MaskcatUniformMutation(maskcat_config.MUTATION_PROB) , 
                                             selection= jmetal.operator.selection.BinaryTournamentSelection(), 
-                                            crossover=MaskcatSPXCrossover(0.7),
+                                            crossover=MaskcatSPXCrossover(maskcat_config.CROSSOVER_PROB),
                                             termination_criterion=StoppingByEvaluations(maskcat_config.MAX_EVALUATIONS))
 
             basic = observers.BasicObserver(frequency=1.0)

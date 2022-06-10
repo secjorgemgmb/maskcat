@@ -2,14 +2,25 @@ from ctypes.wintypes import WORD
 import datetime
 
 
+GENERATIONAL = True
+POPULATION_SIZE=50
+OFFSPRING_POPULATION =50
+MAX_EVALUATIONS=10000
+REPETITIONS=10
+
+DIRECTORY_OUTPUT_FILES = "./experiments/maskcat_loop50-200_generational"
+
+MUTATION_PROB = 0.1
+CROSSOVER_PROB = 0.7
+
 #========== Directories to open or write files ==========
 # Generar ficheros para analizar la ejecución
 OUTPUT_FILES = True
 #DIRECTORY_OUTPUT_FILES = "./experiments/maskcat_prueba_{}".format(datetime.date.today())
-DIRECTORY_OUTPUT_FILES = "./experiments/maskcat_loop200-100"
+
 
 #Preferible ruta absoluta del fichero wordlist
-#WORDLIST_ROUTE = "C:\\Users\\Jorge\\Desktop\\TFG\\maskcat\\DOWNLOAD\\wordlists\\shuffled_top_1M_MD5.txt"
+# WORDLIST_ROUTE = "C:\\Users\\Jorge\\Desktop\\TFG\\maskcat\\DOWNLOAD\\wordlists\\rockyouMD5_1.txt"
 
 WORDLIST_ROUTE = "/home/alumno/maskcat/DOWNLOAD/wordlists/experiments-file_MD5.txt"
 
@@ -25,15 +36,4 @@ HASHCAT_COMMAND = "NONE"
 #MASK_LEN = Longitud de la máscara - 1
 MASK_LEN=7
 PREDEFINED_MASKS=0
-
-#========== Maskcat GeneticAlgorithm execution variables ==========
-GENERATIONAL = False
-
-POPULATION_RESET = False
-POPULATION_RESET_NUMBER = 1
-
-POPULATION_SIZE=200
-OFFSPRING_POPULATION =200
-MAX_EVALUATIONS=20000
-REPETITIONS=10
 

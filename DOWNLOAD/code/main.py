@@ -23,31 +23,31 @@ def update_times(t_inicio, t_fin):
     print("Hora de inicio= {}\nHora de fin= {}\n".format(t_inicio, t_fin))
 
 
-update_config(300, 100)
+#update_config(300, 100)
+#inicio = datetime.datetime.now()
+#Maskcat().run()
+#fin = datetime.datetime.now()
+#update_times(inicio, fin)
+
+update_config(200, 200)
+inicio = datetime.datetime.now()
+Maskcat().run()
+fin = datetime.datetime.now()
+update_times(inicio, fin)
+
+#update_config(50, 200)
+#inicio = datetime.datetime.now()
+#Maskcat().run()
+#fin = datetime.datetime.now()
+#update_times(inicio, fin)
+
+update_config(100, 200)
 inicio = datetime.datetime.now()
 Maskcat().run()
 fin = datetime.datetime.now()
 update_times(inicio, fin)
 
 #update_config(200, 100)
-#inicio = datetime.datetime.now()
-#Maskcat().run()
-#fin = datetime.datetime.now()
-#update_times(inicio, fin)
-
-update_config(50, 200)
-inicio = datetime.datetime.now()
-Maskcat().run()
-fin = datetime.datetime.now()
-update_times(inicio, fin)
-
-#update_config(100, 200)
-#inicio = datetime.datetime.now()
-#Maskcat().run()
-#fin = datetime.datetime.now()
-#update_times(inicio, fin)
-
-#update_config(200, 200)
 #inicio = datetime.datetime.now()
 #Maskcat().run()
 #fin = datetime.datetime.now()

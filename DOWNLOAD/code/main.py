@@ -1,5 +1,6 @@
 import datetime
 from maskcat import Maskcat
+import sys
 
 import maskcat_config
 
@@ -22,39 +23,10 @@ def update_times(t_inicio, t_fin):
 
     print("Hora de inicio= {}\nHora de fin= {}\n".format(t_inicio, t_fin))
 
-
-#update_config(300, 100)
-#inicio = datetime.datetime.now()
-#Maskcat().run()
-#fin = datetime.datetime.now()
-#update_times(inicio, fin)
-
-update_config(200, 200)
+params = sys.argv[1:]
+update_config(int(params[0]), int(params[1]))
 inicio = datetime.datetime.now()
 Maskcat().run()
 fin = datetime.datetime.now()
 update_times(inicio, fin)
 
-#update_config(50, 200)
-#inicio = datetime.datetime.now()
-#Maskcat().run()
-#fin = datetime.datetime.now()
-#update_times(inicio, fin)
-
-update_config(100, 200)
-inicio = datetime.datetime.now()
-Maskcat().run()
-fin = datetime.datetime.now()
-update_times(inicio, fin)
-
-#update_config(200, 100)
-#inicio = datetime.datetime.now()
-#Maskcat().run()
-#fin = datetime.datetime.now()
-#update_times(inicio, fin)
-
-#update_config(300, 200)
-#inicio = datetime.datetime.now()
-#Maskcat().run()
-#fin = datetime.datetime.now()
-#update_times(inicio, fin)

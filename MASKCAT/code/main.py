@@ -1,13 +1,16 @@
 import datetime
 from maskcat import Maskcat
+import sys
+
 
 import maskcat_config
 
-def update_config(population:int, generations:int):
+def update_config(population:int, generations:int, probability:int):
     maskcat_config.POPULATION_SIZE = population
     maskcat_config.OFFSPRING_POPULATION = population
     maskcat_config.MAX_EVALUATIONS = population * generations
-    maskcat_config.DIRECTORY_OUTPUT_FILES= "./experiments/maskcat_loop{}-{}_generational".format(population, generations)
+    maskcat_config.MUTATION_PROB = float(probability/100)
+    maskcat_config.DIRECTORY_OUTPUT_FILES= "/home/jmcolmenar/maskcat/MASKCAT/experiments/maskcat_loop{}-{}_{}".format(population, generations, probability)
 
 def update_times(t_inicio, t_fin):
     if maskcat_config.OUTPUT_FILES:
@@ -22,39 +25,9 @@ def update_times(t_inicio, t_fin):
 
     print("Hora de inicio= {}\nHora de fin= {}\n".format(t_inicio, t_fin))
 
-
-#update_config(300, 100)
+params = sys.argv[1:]
+update_config(int(params[0]), int(params[1]), int(params[2]))
 inicio = datetime.datetime.now()
 Maskcat().run()
 fin = datetime.datetime.now()
 update_times(inicio, fin)
-
-# update_config(200, 200)
-# inicio = datetime.datetime.now()
-# Maskcat().run()
-# fin = datetime.datetime.now()
-# update_times(inicio, fin)
-
-#update_config(50, 200)
-#inicio = datetime.datetime.now()
-#Maskcat().run()
-#fin = datetime.datetime.now()
-#update_times(inicio, fin)
-
-# update_config(100, 200)
-# inicio = datetime.datetime.now()
-# Maskcat().run()
-# fin = datetime.datetime.now()
-# update_times(inicio, fin)
-
-#update_config(200, 100)
-#inicio = datetime.datetime.now()
-#Maskcat().run()
-#fin = datetime.datetime.now()
-#update_times(inicio, fin)
-
-#update_config(300, 200)
-#inicio = datetime.datetime.now()
-#Maskcat().run()
-#fin = datetime.datetime.now()
-#update_times(inicio, fin)

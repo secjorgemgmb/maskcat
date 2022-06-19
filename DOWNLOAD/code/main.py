@@ -8,7 +8,7 @@ def update_config(population:int, generations:int):
     maskcat_config.POPULATION_SIZE = population
     maskcat_config.OFFSPRING_POPULATION = population
     maskcat_config.MAX_EVALUATIONS = population * generations
-    maskcat_config.DIRECTORY_OUTPUT_FILES= "./experiments/maskcat_loop{}-{}_generational".format(population, generations)
+    maskcat_config.DIRECTORY_OUTPUT_FILES= "./experiments/maskcat_loop{}-{}".format(population, generations)
 
 def update_times(t_inicio, t_fin):
     if maskcat_config.OUTPUT_FILES:

@@ -2,13 +2,13 @@ from ctypes.wintypes import WORD
 import datetime
 
 
-GENERATIONAL = True
-POPULATION_SIZE=50
-OFFSPRING_POPULATION =50
-MAX_EVALUATIONS=10000
+GENERATIONAL = False
+POPULATION_SIZE=300
+OFFSPRING_POPULATION =300
+MAX_EVALUATIONS=30000
 REPETITIONS=10
 
-DIRECTORY_OUTPUT_FILES = "./experiments/maskcat_loop50-200_generational"
+DIRECTORY_OUTPUT_FILES = "./experiments/maskcat_loop300-100_prob10"
 
 MUTATION_PROB = 0.1
 CROSSOVER_PROB = 0.7
@@ -22,7 +22,7 @@ OUTPUT_FILES = True
 #Preferible ruta absoluta del fichero wordlist
 # WORDLIST_ROUTE = "C:\\Users\\Jorge\\Desktop\\TFG\\maskcat\\DOWNLOAD\\wordlists\\rockyouMD5_1.txt"
 
-WORDLIST_ROUTE = "/home/alumno/maskcat/DOWNLOAD/wordlists/experiments-file_MD5.txt"
+WORDLIST_ROUTE = "/home/jmcolmenar/maskcat/MASKCAT/wordlists/experiments-file_MD5.txt"
 
 
 #========== Maskcat Command ==========

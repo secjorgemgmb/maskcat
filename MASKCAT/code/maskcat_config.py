@@ -2,7 +2,7 @@ from ctypes.wintypes import WORD
 import datetime
 
 
-GENERATIONAL = False
+GENERATIONAL = True
 POPULATION_SIZE=300
 OFFSPRING_POPULATION =300
 MAX_EVALUATIONS=30000

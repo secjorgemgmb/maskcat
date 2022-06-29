@@ -1,3 +1,0 @@
-Experimento : prueba rendimiento maskcat poblacion 500, 100 generacines algortimo generacional
-    Inicio: 2022-05-16 14:34:33.292424
-    Fin: 2022-05-16 18:25:04.108621

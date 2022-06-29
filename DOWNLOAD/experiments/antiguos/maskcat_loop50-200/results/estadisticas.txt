@@ -1,6 +1,0 @@
-Media = -10754.9
-Max = -14801.5
-Min = -2493.2
-Desviacion estandar = 5168.122498978178
-Moda = -14801.5
-Mediana = -13084.25

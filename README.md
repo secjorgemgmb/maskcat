@@ -1,6 +1,6 @@
 # Maskcat
 
-Makscat es un programa que mediante el uso de algoritmos genéticos optimiza la generación de patrones de *Hashcat*. En este fichero se pueden encontrar los requisitos de instalación y el método de uso.
+Makscat es un programa que mediante el uso de algoritmos genéticos optimiza la generación de patrones para las máscaras de *Hashcat*. A continuación se pueden encontrar los requisitos de instalación y el método de uso.
 
 ## Requisitos de instalación
 
